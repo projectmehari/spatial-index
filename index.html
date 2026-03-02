@@ -433,9 +433,44 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 60px 32px;
+      padding: 32px 32px;
       border-top: 1px solid var(--border);
     }
+
+    .footer-links {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--lime); }
+
+    .footer-sep {
+      color: var(--border);
+      margin: 0 12px;
+    }
+
+    .footer-email {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .footer-email a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-email a:hover { color: var(--lime); }
 
     .footer-text {
       font-family: var(--font-mono);
@@ -628,7 +663,18 @@
   </div><!-- /.scroll-container -->
 
   <footer>
-    <p class="footer-text">Kiru Mehari · Spatial Computing · 3DGS Experiments · 2025–2026</p>
+    <div class="footer-links">
+      <a href="https://x.com/verymehari" target="_blank">Twitter</a>
+      <span class="footer-sep">|</span>
+      <a href="https://www.are.na/kiru/index" target="_blank">Are.na</a>
+      <span class="footer-sep">|</span>
+      <a href="https://www.instagram.com/verymehari/" target="_blank">Instagram</a>
+      <span class="footer-sep">|</span>
+      <a href="https://github.com/projectmehari" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-email">
+      <a href="mailto:projectmehari@gmail.com">projectmehari@gmail.com</a>
+    </div>
   </footer>
 
 <script>
