@@ -537,15 +537,53 @@
       <div class="intro-eyebrow">3DGS · World Models · Spatial Computing</div>
       <h1 class="intro-title">Spatial Index</h1>
       <p class="intro-sub">
-        <span>03</span> experiments across the full spatial pipeline —<br>
+        <span>04</span> experiments across the full spatial pipeline —<br>
         capture · reconstruction · synthesis · navigation
       </p>
     </div>
 
     <div class="scene-track">
 
-      <!-- Scene 03 — DepthShift (latest) -->
+      <!-- Scene 04 — Durée (latest) -->
       <div class="scene" data-idx="0">
+        <div class="scene-card" onclick="window.open('https://duree.spatial-index.xyz','_blank')">
+          <div class="card-topbar">
+            <div class="card-topbar-left">
+              <div class="card-dot"></div>
+              <span class="card-id">scene_04 · DURÉE</span>
+            </div>
+            <span class="card-status live">● live</span>
+          </div>
+          <div class="card-preview">
+            <img src="duree.gif" alt="Durée — video as navigable 3D object" />
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <div class="card-title">Video as Spatial Object</div>
+              <div class="card-subtitle">Three.js · WebCodecs · GLSL · Gemini AI → Frame Stack</div>
+              <p class="card-desc">All frames of a video rendered simultaneously as stacked semi-transparent planes — treating time as a navigable spatial axis. Orbit the full timeline as a physical object. Gemini AI search lets you query frames by natural language.</p>
+              <div class="card-tags">
+                <span class="card-tag">Three.js</span>
+                <span class="card-tag">WebCodecs</span>
+                <span class="card-tag">GLSL</span>
+                <span class="card-tag">Gemini</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="card-num">04</div>
+              <a class="card-link" href="https://duree.spatial-index.xyz" target="_blank" onclick="event.stopPropagation()">↗ Demo</a>
+              <a class="card-link" href="https://github.com/projectmehari/duree" target="_blank" onclick="event.stopPropagation()">↗ Source</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-coords">45.5017° N, 73.5673° W</span>
+            <span class="card-format">OUTPUT · FRAME STACK · TEMPORAL OBJECT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 03 — DepthShift -->
+      <div class="scene" data-idx="1">
         <div class="scene-card" onclick="window.open('https://depthshift.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -583,7 +621,7 @@
       </div>
 
       <!-- Scene 02 — Marble -->
-      <div class="scene" data-idx="1">
+      <div class="scene" data-idx="2">
         <div class="scene-card" onclick="window.open('https://marble.worldlabs.ai/world/4305a51d-e2f3-4127-a3b3-6a6c43c2b9fc','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -621,7 +659,7 @@
       </div>
 
       <!-- Scene 01 — SHARP -->
-      <div class="scene" data-idx="2">
+      <div class="scene" data-idx="3">
         <div class="scene-card" onclick="window.open('https://huggingface.co/spaces/verymehari/SharpView','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -673,11 +711,11 @@
       <a href="https://github.com/projectmehari" target="_blank">GitHub</a>
     </div>
     <div class="footer-email">
-      <a href="mailto:projectmehari@gmail.com">projectmehari@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#92e2e0fdf8f7f1e6fff7faf3e0fbd2f5fff3fbfebcf1fdff"><span class="__cf_email__" data-cfemail="0e7e7c61646b6d7a636b666f7c674e69636f6762206d6163">[email&#160;protected]</span></a>
     </div>
   </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── CLOCK ──
   function tick() {
     const n = new Date();
@@ -791,15 +829,4 @@
 
   // ── PARALLAX DEPTH on scroll ──
   window.addEventListener('scroll', () => {
-    const sy = window.scrollY;
-    scenes.forEach((s, i) => {
-      if (s.classList.contains('visible')) {
-        const depth = (i + 1) * 0.012;
-        s.style.transform = `translateY(${sy * depth * -0.3}px)`;
-      }
-    });
-  });
-</script>
-
-</body>
-</html>
+    const 
