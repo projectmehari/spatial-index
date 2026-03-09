@@ -831,4 +831,14 @@
 
   // ── PARALLAX DEPTH on scroll ──
   window.addEventListener('scroll', () => {
-    const 
+    const scrollY = window.scrollY;
+    scenes.forEach((s, i) => {
+      const rect = s.getBoundingClientRect();
+      const depth = (i + 1) * 0.5;
+      const offset = (rect.top / window.innerHeight) * depth * 10;
+      s.style.transform = `translateY(${offset}px)`;
+    });
+  });
+</script>
+</body>
+</html>
