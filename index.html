@@ -546,8 +546,46 @@
 
     <div class="scene-track">
 
-      <!-- Scene 04 — Durée (latest) -->
+      <!-- Scene 05 — Atlas (latest) -->
       <div class="scene" data-idx="0">
+        <div class="scene-card" onclick="window.open('https://atlas.spatial-index.xyz','_blank')">
+          <div class="card-topbar">
+            <div class="card-topbar-left">
+              <div class="card-dot"></div>
+              <span class="card-id">scene_05 · ATLAS</span>
+            </div>
+            <span class="card-status live">● live</span>
+          </div>
+          <div class="card-preview">
+            <img src="atlas.gif" alt="ATLAS — 3D semantic search for live performances" />
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <div class="card-title">3D Semantic Search for Live Performances</div>
+              <div class="card-subtitle">Three.js · Gemini Embedding 2 · ElevenLabs TTS → Molecular Globe</div>
+              <p class="card-desc">Four Boiler Room / Cercle sets decomposed into audio, video frames, video native, and text molecules — 1,788 atoms embedded at 768 dimensions, rendered as an orbitable 3D globe. Query a concept and cosine similarity lights up matches across all 16 molecules. An assemblage engine cuts a ~60s sequence from the highest-matched clips, edited by meaning, not by time.</p>
+              <div class="card-tags">
+                <span class="card-tag">Three.js</span>
+                <span class="card-tag">Gemini</span>
+                <span class="card-tag">ElevenLabs</span>
+                <span class="card-tag">Embeddings</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="card-num">05</div>
+              <a class="card-link" href="https://atlas.spatial-index.xyz" target="_blank" onclick="event.stopPropagation()">↗ Demo</a>
+              <a class="card-link" href="https://github.com/projectmehari/spatial-index" target="_blank" onclick="event.stopPropagation()">↗ Source</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-coords">45.5017° N, 73.5673° W</span>
+            <span class="card-format">OUTPUT · MOLECULAR GLOBE · SEMANTIC SEARCH</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 04 — Durée -->
+      <div class="scene" data-idx="1">
         <div class="scene-card" onclick="window.open('https://duree.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -585,7 +623,7 @@
       </div>
 
       <!-- Scene 03 — DepthShift -->
-      <div class="scene" data-idx="1">
+      <div class="scene" data-idx="2">
         <div class="scene-card" onclick="window.open('https://depthshift.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -623,7 +661,7 @@
       </div>
 
       <!-- Scene 02 — Marble -->
-      <div class="scene" data-idx="2">
+      <div class="scene" data-idx="3">
         <div class="scene-card" onclick="window.open('https://marble.worldlabs.ai/world/4305a51d-e2f3-4127-a3b3-6a6c43c2b9fc','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -661,7 +699,7 @@
       </div>
 
       <!-- Scene 01 — SHARP -->
-      <div class="scene" data-idx="3">
+      <div class="scene" data-idx="4">
         <div class="scene-card" onclick="window.open('https://huggingface.co/spaces/verymehari/SharpView','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -713,11 +751,11 @@
       <a href="https://github.com/projectmehari" target="_blank">GitHub</a>
     </div>
     <div class="footer-email">
-      <a href="mailto:projectmehari@gmail.com">projectmehari@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#0a7a7865606f697e676f626b78634a6d676b636624696567"><span class="__cf_email__" data-cfemail="c7b7b5a8ada2a4b3aaa2afa6b5ae87a0aaa6aeabe9a4a8aa">[email&#160;protected]</span></a>
     </div>
   </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── CLOCK ──
   function tick() {
     const n = new Date();
@@ -832,13 +870,4 @@
   // ── PARALLAX DEPTH on scroll ──
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
-    scenes.forEach((s, i) => {
-      const rect = s.getBoundingClientRect();
-      const depth = (i + 1) * 0.5;
-      const offset = (rect.top / window.innerHeight) * depth * 10;
-      s.style.transform = `translateY(${offset}px)`;
-    });
-  });
-</script>
-</body>
-</html>
+    scenes.forEach((s
