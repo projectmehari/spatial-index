@@ -4,6 +4,10 @@ A scroll-driven portfolio navigator for spatial computing experiments. Each proj
 
 ## Projects
 
+**05 — ATLAS**
+3D semantic search engine for live performances. Four Boiler Room / Cercle sets decomposed into audio, video frames, video native, and text molecules — 1,788 atoms embedded with Gemini Embedding 2 at 768 dimensions, rendered as an orbitable 3D globe. Query a concept and cosine similarity lights up matches across all 16 molecules. An assemblage engine cuts a ~60s sequence from the highest-matched clips, edited by meaning, not by time.
+[atlas.spatial-index.xyz](https://atlas.spatial-index.xyz)
+
 **04 — Durée**
 All frames of a video rendered simultaneously as stacked semi-transparent planes — treating time as a navigable spatial axis. Orbit the full timeline as a physical object. Gemini AI search lets you query frames by natural language. Built with Three.js, WebCodecs, and GLSL shaders.
 [duree.spatial-index.xyz](https://duree.spatial-index.xyz)
