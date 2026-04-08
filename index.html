@@ -737,10 +737,14 @@
     // ── CUSTOM CURSOR ──
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    cursor.style.opacity = '0';
+    ring.style.opacity = '0';
 
     document.addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
+      cursor.style.opacity = '1';
+      ring.style.opacity = '1';
       cursor.style.transform = `translate(${mx - 2}px, ${my - 2}px)`;
     });
 
