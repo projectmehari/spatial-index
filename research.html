@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research — Spatial Index</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0d1a04;
+      --lime:      #8aba1a;
+      --lime-dim:  rgba(138,186,26,0.15);
+      --lime-glow: rgba(138,186,26,0.4);
+      --green-dk:  #1e3a0f;
+      --text:      #8aba1a;
+      --text-dim:  #4a7a1a;
+      --border:    rgba(138,186,26,0.2);
+      --font-serif: "Cormorant Garamond", serif;
+      --font-mono:  "Geist Mono", monospace;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    #grid-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(to bottom, rgba(13,26,4,0.95), transparent);
+    }
+
+    .header-left {
+      font-family: var(--font-serif);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .header-left a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      transition: color 0.2s;
+    }
+
+    .header-left a:hover { color: var(--lime); }
+
+    .header-nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .header-nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .header-nav a:hover { color: var(--lime); }
+    .header-nav a.active { color: var(--lime); }
+
+    .header-right {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      box-shadow: 0 0 8px var(--lime-glow);
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(138,186,26,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.15s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ── SCROLL CONTAINER ── */
+    .scroll-container {
+      position: relative;
+      z-index: 10;
+      padding-top: 120px;
+      padding-bottom: 200px;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      text-align: center;
+      padding: 60px 32px 80px;
+    }
+
+    .intro-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+
+    .intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--lime);
+      text-shadow: 0 0 80px var(--lime-glow);
+      margin-bottom: 24px;
+    }
+
+    .intro-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+    }
+
+    .intro-sub span { color: var(--lime); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      width: min(900px, 88vw);
+      margin: 0 auto 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-label-text {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .section-label-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── RESEARCH ENTRY ── */
+    .research-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .research-entry {
+      width: min(900px, 88vw);
+      position: relative;
+      margin-bottom: 120px;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .research-entry::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--border));
+      transform: translateX(-50%);
+    }
+
+    .research-entry:first-child::before { display: none; }
+
+    /* ── RESEARCH CARD ── */
+    .research-card {
+      border: 1px solid var(--border);
+      background: rgba(13,26,4,0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .research-card:hover {
+      border-color: rgba(138,186,26,0.5);
+      box-shadow: 0 0 40px rgba(138,186,26,0.08), 0 0 1px var(--lime) inset;
+    }
+
+    /* ── CARD TOPBAR ── */
+    .card-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(138,186,26,0.04);
+    }
+
+    .card-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      opacity: 0.5;
+    }
+
+    .research-card:hover .card-dot { opacity: 1; }
+
+    .card-id {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .card-status {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+
+    .card-status.live { color: var(--lime); }
+
+    /* ── CARD META HEADER ── */
+    .card-meta-header {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--lime);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-family: var(--font-serif);
+      font-size: clamp(13px, 1.4vw, 15px);
+      line-height: 1.7;
+      color: rgba(138,186,26,0.7);
+      max-width: 60ch;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+      padding-top: 4px;
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 300;
+      color: rgba(138,186,26,0.1);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      transition: color 0.3s;
+    }
+
+    .research-card:hover .card-num { color: rgba(138,186,26,0.22); }
+
+    .card-link {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .card-link:hover { background: var(--lime-dim); border-color: var(--lime); color: var(--lime); }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 14px;
+    }
+
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .research-card:hover .card-tag { border-color: rgba(138,186,26,0.4); color: var(--lime); }
+
+    /* ── GRAPH PREVIEW ── */
+    .graph-preview-wrap {
+      position: relative;
+      height: 340px;
+      background: #f5f4f2;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .graph-preview-wrap #cy2 {
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* static thumbnail — interaction only in fullscreen */
+    }
+
+    .graph-fullscreen-btn {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #d0cdc8;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-family: "Inter", system-ui, sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .graph-fullscreen-btn:hover {
+      border-color: #999;
+      color: #111;
+      background: #fff;
+    }
+
+    /* ── FULLSCREEN OVERLAY ── */
+    #graph-fs-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #f5f4f2;
+      font-family: "Inter", system-ui, sans-serif;
+    }
+
+    #graph-fs-overlay.open { display: block; }
+
+    .graph-fs-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 40px;
+      background: #1e3a0f;
+      border-bottom: 1px solid rgba(138,186,26,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 10;
+    }
+
+    .graph-fs-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+    }
+
+    .graph-fs-close {
+      background: transparent;
+      border: 1px solid rgba(138,186,26,0.3);
+      border-radius: 3px;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .graph-fs-close:hover { border-color: var(--lime); color: var(--lime); }
+
+    #cy2-fs {
+      position: absolute;
+      top: 40px; left: 0; right: 0; bottom: 0;
+    }
+
+    /* ── GRAPH UI COMPONENTS (used inside fullscreen overlay) ── */
+    .wm-btn {
+      background: #fff;
+      border: 1px solid #d0cdc8;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 10px;
+      cursor: pointer;
+      color: #666;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .wm-btn:hover { border-color: #999; color: #333; }
+    .wm-btn.active { border-color: #333; color: #111; background: #fff; font-weight: 600; }
+
+    #wm-controls {
+      position: absolute;
+      top: 52px;
+      left: 12px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #wm-arena-bar {
+      position: absolute;
+      top: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #d0cdc8;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 10px;
+      color: #666;
+    }
+    #wm-arena-bar a { color: #555; text-decoration: none; font-weight: 500; }
+    #wm-arena-bar a:hover { color: #111; }
+    #wm-arena-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
+    #wm-arena-dot.live { background: #4caf79; }
+    #wm-arena-dot.error { background: #e05252; }
+
+    #wm-legend {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: #fff;
+      border: 1px solid #d0cdc8;
+      border-radius: 6px;
+      padding: 8px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 20;
+    }
+    .wm-leg { display: flex; align-items: center; gap: 6px; color: #666; font-size: 10px; }
+    .wm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    #wm-sidebar {
+      position: absolute;
+      top: 52px;
+      right: 12px;
+      width: 220px;
+      background: #fff;
+      border: 1px solid #d0cdc8;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 10px;
+      display: none;
+      max-height: calc(100% - 120px);
+      overflow-y: auto;
+      z-index: 30;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    #wm-sidebar h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; color: #111; }
+    .ws-type { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 10px; }
+    .ws-close { position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 14px; color: #aaa; line-height: 1; }
+    .ws-close:hover { color: #333; }
+    .ws-section-head { font-size: 8px; color: #aaa; margin-bottom: 4px; margin-top: 8px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .ws-item { padding: 4px 0; border-bottom: 1px solid #f0ede9; display: flex; align-items: center; gap: 6px; font-size: 9px; color: #555; }
+    .ws-item:last-child { border-bottom: none; }
+    .ws-badge { font-size: 8px; padding: 1px 5px; border-radius: 3px; font-weight: 600; white-space: nowrap; text-transform: uppercase; flex-shrink: 0; }
+    .ws-lead   { background: #fef3e2; color: #c47d10; border: 1px solid #f5d99a; }
+    .ws-inv    { background: #f0f0f0; color: #555;    border: 1px solid #d8d5d0; }
+    .ws-angel  { background: #fde8ef; color: #c0395e; border: 1px solid #f5b8cc; }
+    .ws-parent { background: #fde8e8; color: #c03535; border: 1px solid #f5b8b8; }
+    #ws-sources { margin-top: 10px; }
+    .ws-source-head { font-size: 8px; color: #aaa; margin-bottom: 4px; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+    .ws-source-link { display: block; padding: 4px 0; border-bottom: 1px solid #f0ede9; font-size: 9px; color: #5b8dd9; text-decoration: none; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-source-link:last-child { border-bottom: none; }
+    .ws-source-link:hover { color: #2d5fa3; }
+
+    #wm-search {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 20;
+    }
+    #wm-search input { background: #fff; border: 1px solid #d0cdc8; border-radius: 4px; padding: 6px 10px; font-size: 10px; color: #333; outline: none; width: 160px; font-family: inherit; }
+    #wm-search input:focus { border-color: #999; }
+    #wm-search input::placeholder { color: #bbb; }
+
+    #wm-etip {
+      display: none;
+      position: absolute;
+      background: #fff;
+      border: 1px solid #d0cdc8;
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 10px;
+      color: #333;
+      pointer-events: none;
+      z-index: 40;
+      max-width: 220px;
+      line-height: 1.6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ── CARD FOOTER ── */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-coords, .card-format {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 32px 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-links {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .footer-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--lime); }
+    .footer-sep { color: var(--border); margin: 0 12px; }
+
+    .footer-email { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; }
+    .footer-email a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .footer-email a:hover { color: var(--lime); }
+
+    @media (max-width: 600px) {
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+      .footer-sep { display: none; }
+      .card-meta-header { grid-template-columns: 1fr; }
+      .card-actions { flex-direction: row; align-items: center; }
+      .card-num { display: none; }
+      .header-nav { display: none; }
+      .intro-title { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <canvas id="grid-canvas"></canvas>
+
+  <header>
+    <div class="header-left"><a href="https://www.spatial-index.xyz">Kiru Mehari</a></div>
+    <nav class="header-nav">
+      <a href="https://www.spatial-index.xyz">Work</a>
+      <a href="https://www.spatial-index.xyz/research" class="active">Research</a>
+    </nav>
+    <div class="header-right" id="clock">00:00:00</div>
+  </header>
+
+  <div class="scroll-container">
+
+    <div class="intro">
+      <div class="intro-eyebrow">World Models · Spatial AI · Funding Landscape</div>
+      <h1 class="intro-title">Research</h1>
+      <p class="intro-sub">
+        Mapping the infrastructure of spatial intelligence —<br>
+        <span>01</span> release · companies · capital · connections
+      </p>
+    </div>
+
+    <div class="section-label">
+      <span class="section-label-text">release_01</span>
+      <div class="section-label-line"></div>
+    </div>
+
+    <div class="research-track">
+
+      <!-- Research 01 — World Model Funding Graph -->
+      <div class="research-entry" data-idx="0">
+        <div class="research-card">
+
+          <div class="card-topbar">
+            <div class="card-topbar-left">
+              <div class="card-dot"></div>
+              <span class="card-id">research_01 · WORLD MODEL FUNDING</span>
+            </div>
+            <span class="card-status live">● live</span>
+          </div>
+
+          <div class="card-meta-header">
+            <div class="card-meta">
+              <div class="card-title">World Model Funding Graph</div>
+              <div class="card-subtitle">Cytoscape.js · Are.na · Force Graph → Investment Network</div>
+              <p class="card-desc">An interactive map of capital flows across the world model landscape — eight companies, their lead investors, VCs, angels, and corporate backers rendered as a navigable network. Click any node to trace connections; filter by entity type; sync live sources from Are.na.</p>
+              <div class="card-tags">
+                <span class="card-tag">Cytoscape.js</span>
+                <span class="card-tag">Are.na API</span>
+                <span class="card-tag">Force Graph</span>
+                <span class="card-tag">Network Analysis</span>
+                <span class="card-tag">World Models</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="card-num">01</div>
+              <a class="card-link" href="https://www.are.na/vestiges/world-models-funding" target="_blank">↗ Are.na</a>
+            </div>
+          </div>
+
+          <!-- ── GRAPH PREVIEW (compact) ── -->
+          <div class="card-preview graph-preview-wrap" id="graph-preview-wrap">
+            <div id="cy2" style="width:100%;height:100%;"></div>
+            <button class="graph-fullscreen-btn" onclick="openGraphFullscreen()" title="Fullscreen">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 5V1H5M8 1H12V5M12 8V12H8M5 12H1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Fullscreen
+            </button>
+          </div>
+
+          <!-- ── FULLSCREEN OVERLAY ── -->
+          <div id="graph-fs-overlay">
+            <div class="graph-fs-header">
+              <span class="graph-fs-title">World Model Funding Graph</span>
+              <button class="graph-fs-close" onclick="closeGraphFullscreen()">&#x2715; Close</button>
+            </div>
+            <div id="cy2-fs"></div>
+
+            <div id="wm-controls">
+              <button class="wm-btn active" id="wbtn-all"      onclick="wmFilter('all')">All</button>
+              <button class="wm-btn"         id="wbtn-company"  onclick="wmFilter('company')">Companies</button>
+              <button class="wm-btn"         id="wbtn-vc"       onclick="wmFilter('vc')">VCs</button>
+              <button class="wm-btn"         id="wbtn-angel"    onclick="wmFilter('angel')">Angels</button>
+              <button class="wm-btn"                            onclick="wmReset()">&#x27F3; Reset</button>
+            </div>
+
+            <div id="wm-arena-bar">
+              <div id="wm-arena-dot"></div>
+              <span>Are.na: <a href="https://www.are.na/vestiges/world-models-funding" target="_blank">world-models-funding</a></span>
+              <span id="wm-arena-count" style="color:#aaa">&#8212;</span>
+              <button class="wm-btn" style="padding:2px 7px;font-size:9px;margin-left:4px" onclick="fetchArena()">&#x21BB; Sync</button>
+            </div>
+
+            <div id="wm-legend">
+              <div class="wm-leg"><div class="wm-dot" style="background:#6b63d4"></div>Company</div>
+              <div class="wm-leg"><div class="wm-dot" style="background:#4a8fa8"></div>VC / Fund</div>
+              <div class="wm-leg"><div class="wm-dot" style="background:#d4a843"></div>Corporate</div>
+              <div class="wm-leg"><div class="wm-dot" style="background:#c0607a"></div>Angel</div>
+            </div>
+
+            <div id="wm-sidebar">
+              <span class="ws-close" onclick="document.getElementById('wm-sidebar').style.display='none'">&#x2715;</span>
+              <h3 id="ws-name">Node</h3>
+              <div class="ws-type" id="ws-type"></div>
+              <div id="ws-conn"></div>
+              <div id="ws-sources"></div>
+            </div>
+
+            <div id="wm-search"><input placeholder="Search node&#x2026;" oninput="wmSearch(this.value)" /></div>
+            <div id="wm-etip"></div>
+          </div>
+
+          <div class="card-footer">
+            <span class="card-coords">45.5017° N, 73.5673° W</span>
+            <span class="card-format">OUTPUT · NETWORK GRAPH · FUNDING LANDSCAPE</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /.research-track -->
+  </div><!-- /.scroll-container -->
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://x.com/verymehari" target="_blank">Twitter</a>
+      <span class="footer-sep">|</span>
+      <a href="https://www.are.na/kiru/index" target="_blank">Are.na</a>
+      <span class="footer-sep">|</span>
+      <a href="https://www.instagram.com/verymehari/" target="_blank">Instagram</a>
+      <span class="footer-sep">|</span>
+      <a href="https://github.com/projectmehari" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-email">
+      <a href="/cdn-cgi/l/email-protection#1972706b6c596a69786d7078753470777d7c6137616063"><span class="__cf_email__" data-cfemail="5b3032292e1b282b3a2f323a377632353f3e2375232221">[email&#160;protected]</span></a>
+    </div>
+  </footer>
+
+  <!-- ── GRAPH SCRIPT ── -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+  <script>
+  // ─── DATA ────────────────────────────────────────────────────────────────────
+  const rawNodes=[
+    {id:"9:736",name:"Odyssey"},{id:"11:1478",name:"World Labs"},
+    {id:"9:795",name:"Google Ventures"},{id:"11:1479",name:"NEA"},
+    {id:"11:1399",name:"EQT Ventures"},{id:"11:1480",name:"a16z"},
+    {id:"9:835",name:"DCVC"},{id:"11:1481",name:"Adobe Ventures"},
+    {id:"9:901",name:"Air Street Capital"},{id:"11:1482",name:"AMD Ventures"},
+    {id:"11:1423",name:"NVentures"},{id:"11:1483",name:"Radical Ventures"},
+    {id:"11:1429",name:"Samsung Next"},{id:"11:1484",name:"Databricks Ventures"},
+    {id:"10:949",name:"Jeffrey Dean"},{id:"10:955",name:"Elad Gil"},
+    {id:"11:1486",name:"Marc Benioff"},{id:"10:1124",name:"Kyle Vogt"},
+    {id:"11:1487",name:"Ashton Kutcher"},{id:"10:1168",name:"Garry Tan"},
+    {id:"11:1488",name:"Autodesk"},{id:"10:1261",name:"Guillermo Rauch"},
+    {id:"11:1489",name:"Fidelity Mgmt."},{id:"10:1280",name:"Soleio"},
+    {id:"11:1490",name:"Emerson Collective"},{id:"12:1746",name:"Sea Limited"},
+    {id:"10:1290",name:"Qasar Younis"},{id:"11:1491",name:"Geoffrey Hinton"},
+    {id:"10:1321",name:"Soumith Chintala"},{id:"11:1492",name:"Sanabil Investments"},
+    {id:"12:1787",name:"Temasek"},{id:"12:1947",name:"NVIDIA Cosmos"},
+    {id:"12:1955",name:"NVIDIA"},{id:"12:1963",name:"Google Genie"},
+    {id:"12:1967",name:"Google / Alphabet"},{id:"12:1975",name:"Luma AI"},
+    {id:"12:1979",name:"HUMAIN (Saudi PIF)"},{id:"12:1983",name:"Amplify Partners"},
+    {id:"12:1987",name:"Matrix Partners"},{id:"12:2015",name:"Decart"},
+    {id:"12:2019",name:"Index Ventures"},{id:"12:2023",name:"Felicis"},
+    {id:"12:2035",name:"Runway"},{id:"12:2039",name:"General Atlantic"},
+    {id:"12:2043",name:"Salesforce Ventures"},{id:"12:2047",name:"Getty Images"},
+    {id:"12:2071",name:"AMI Labs"},{id:"12:2075",name:"Cathay Innovation"},
+    {id:"12:2079",name:"Greycroft"},{id:"12:2083",name:"Hiro Capital"},
+    {id:"12:2087",name:"HV Capital"},{id:"12:2091",name:"Bezos Expeditions"},
+    {id:"12:2115",name:"Toyota Ventures"},{id:"12:2119",name:"New Legacy Ventures"},
+    {id:"12:2123",name:"SBVA"},{id:"12:2127",name:"NVIDIA (AMI)"},
+    {id:"12:2131",name:"Alpha Intelligence Capital"},
+    {id:"12:2163",name:"Mark Cuban"},{id:"12:2167",name:"Eric Schmidt"},
+    {id:"12:2171",name:"Xavier Niel"}
+  ];
+
+  const rawEdges=[
+    {from:"9:795",to:"9:736",label:"Lead investor"},{from:"11:1479",to:"11:1478",label:"Lead investor"},
+    {from:"9:835",to:"9:736",label:"investor"},{from:"11:1481",to:"11:1478",label:"investor"},
+    {from:"9:901",to:"9:736",label:"investor"},{from:"11:1482",to:"11:1478",label:"investor"},
+    {from:"10:955",to:"9:736",label:"Angel"},{from:"11:1486",to:"11:1478",label:"Angel"},
+    {from:"10:949",to:"9:736",label:"Angel"},{from:"10:1124",to:"9:736",label:"Angel"},
+    {from:"11:1487",to:"11:1478",label:"Angel"},{from:"10:1168",to:"9:736",label:"Angel"},
+    {from:"11:1488",to:"11:1478",label:"Investor"},{from:"10:1261",to:"9:736",label:"Angel"},
+    {from:"11:1489",to:"11:1478",label:"Investor"},{from:"10:1280",to:"9:736",label:"Angel"},
+    {from:"11:1490",to:"11:1478",label:"Investor"},{from:"10:1290",to:"9:736",label:"Angel"},
+    {from:"11:1491",to:"11:1478",label:"Angel"},{from:"10:1321",to:"9:736",label:"Angel"},
+    {from:"11:1492",to:"11:1478",label:"Investor"},{from:"11:1399",to:"9:736",label:"Lead investor"},
+    {from:"11:1480",to:"11:1478",label:"Lead investor"},{from:"11:1423",to:"9:736",label:"investor"},
+    {from:"11:1483",to:"11:1478",label:"investor"},{from:"11:1429",to:"9:736",label:"investor"},
+    {from:"11:1484",to:"11:1478",label:"investor"},{from:"10:949",to:"11:1478",label:"Angel"},
+    {from:"11:1423",to:"11:1478",label:"Investor"},{from:"12:1746",to:"11:1478",label:"Investor"},
+    {from:"12:1787",to:"11:1478",label:"Investor"},{from:"12:1955",to:"12:1947",label:"parent company"},
+    {from:"12:1967",to:"12:1963",label:"parent company"},{from:"12:1979",to:"12:1975",label:"Lead investor"},
+    {from:"12:1983",to:"12:1975",label:"investor"},{from:"12:1987",to:"12:1975",label:"investor"},
+    {from:"11:1480",to:"12:1975",label:"investor"},{from:"11:1482",to:"12:1975",label:"investor"},
+    {from:"11:1423",to:"12:1975",label:"investor"},{from:"12:2019",to:"12:2015",label:"Lead investor"},
+    {from:"12:2023",to:"12:2015",label:"investor"},{from:"12:2039",to:"12:2035",label:"Lead investor"},
+    {from:"12:2043",to:"12:2035",label:"investor"},{from:"12:2047",to:"12:2035",label:"investor"},
+    {from:"11:1480",to:"12:2035",label:"investor"},{from:"9:795",to:"12:2035",label:"investor"},
+    {from:"12:2075",to:"12:2071",label:"Lead investor"},{from:"12:2079",to:"12:2071",label:"Lead investor"},
+    {from:"12:2083",to:"12:2071",label:"Lead investor"},{from:"12:2087",to:"12:2071",label:"Lead investor"},
+    {from:"12:2091",to:"12:2071",label:"Lead investor"},{from:"12:2115",to:"12:2071",label:"investor"},
+    {from:"12:2119",to:"12:2071",label:"investor"},{from:"12:2123",to:"12:2071",label:"investor"},
+    {from:"12:2127",to:"12:2071",label:"investor"},{from:"12:2131",to:"12:2071",label:"investor"},
+    {from:"12:1787",to:"12:2071",label:"investor"},{from:"12:1746",to:"12:2071",label:"investor"},
+    {from:"12:2163",to:"12:2071",label:"Angel"},{from:"12:2167",to:"12:2071",label:"Angel"},
+    {from:"12:2171",to:"12:2071",label:"Angel"}
+  ];
+
+  const capitalData = {
+    "9:795->9:736":  "$9M Seed",
+    "11:1399->9:736": "$18M Series A",
+    "12:1979->12:1975": "$900M Series C",
+    "12:2039->12:2035": "$315M Series E @ $5.3B val",
+    "12:2019->12:2015": "$153M total ($21M Seed · $32M Series A · $100M Series B)",
+    "12:2075->12:2071": "$1.03B Seed @ $3.5B val",
+    "12:2079->12:2071": "$1.03B Seed round",
+    "12:2083->12:2071": "$1.03B Seed round",
+    "12:2087->12:2071": "$1.03B Seed round",
+    "12:2091->12:2071": "$1.03B Seed round",
+    "11:1480->11:1478": "$230M (Sept 2024)",
+    "11:1479->11:1478": "$230M (Sept 2024)",
+  };
+
+  // ─── ARE.NA ───────────────────────────────────────────────────────────────────
+  let arenaBlocks = [];
+
+  const nameIndex = {};
+  rawNodes.forEach(n => {
+    const full = n.name.toLowerCase();
+    nameIndex[full] = n.id;
+    full.split(/[\s\/\-\(\)]+/).forEach(w => { if (w.length >= 4) nameIndex[w] = n.id; });
+  });
+
+  function blockMatchesNode(block, nodeLabel) {
+    const hay = ((block.title||'') + ' ' + (block.content||'')).toLowerCase();
+    return hay.includes(nodeLabel.toLowerCase());
+  }
+
+  async function fetchArena() {
+    const dot = document.getElementById('wm-arena-dot');
+    const count = document.getElementById('wm-arena-count');
+    dot.className = '';
+    count.textContent = '…';
+    try {
+      const res = await fetch('https://api.are.na/v3/channels/vestiges-world-models-funding/contents?per=100&sort=position&direction=desc');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      arenaBlocks = (data.contents || [])
+        .filter(b => b.class === 'Link' || b.class === 'Text' || b.class === 'Media')
+        .map(b => ({
+          id: b.id,
+          title: b.title || b.generated_title || '',
+          url: b.source?.url || b.attachment?.url || '',
+          content: b.content || b.description || '',
+          added: b.connected_at || b.created_at || ''
+        }));
+      dot.className = 'live';
+      count.textContent = arenaBlocks.length + ' blocks';
+      const sidebar = document.getElementById('wm-sidebar');
+      if (sidebar.style.display !== 'none') {
+        const currentName = document.getElementById('ws-name').textContent;
+        renderSources(currentName);
+      }
+    } catch(e) {
+      dot.className = 'error';
+      count.textContent = 'offline';
+      console.warn('Are.na fetch failed:', e.message);
+    }
+  }
+
+  function renderSources(nodeLabel) {
+    const el = document.getElementById('ws-sources');
+    const relevant = arenaBlocks.filter(b => blockMatchesNode(b, nodeLabel));
+    if (relevant.length === 0) { el.innerHTML = ''; return; }
+    let html = '<div class="ws-source-head">📎 Are.na sources (' + relevant.length + ')</div>';
+    relevant.slice(0, 8).forEach(b => {
+      const display = (b.title || b.url || 'Untitled').slice(0, 60);
+      if (b.url) {
+        html += `<a class="ws-source-link" href="${b.url}" target="_blank" title="${b.title || b.url}">${display}</a>`;
+      } else {
+        html += `<div class="ws-source-link" style="color:#999;cursor:default">${display}</div>`;
+      }
+    });
+    el.innerHTML = html;
+  }
+
+  window.addEventListener('load', () => setTimeout(fetchArena, 600));
+
+  // ─── CLASSIFY ─────────────────────────────────────────────────────────────────
+  const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"]);
+  const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171"]);
+  const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123"]);
+
+  function classify(id) {
+    if (COMPANIES.has(id))  return 'company';
+    if (ANGELS.has(id))     return 'angel';
+    if (CORPORATES.has(id)) return 'corporate';
+    return 'vc';
+  }
+
+  const typeColors = { company:'#6b63d4', vc:'#4a8fa8', angel:'#c0607a', corporate:'#d4a843' };
+  const typeSize   = { company:46, vc:28, angel:24, corporate:30 };
+
+  // ─── LAYOUT ───────────────────────────────────────────────────────────────────
+  const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"];
+  const companyY = 80;
+
+  function getPrimaryCompany(nodeId) {
+    const targets = rawEdges.filter(e => e.from === nodeId).map(e => e.to);
+    for (const t of targets) { if (COMPANIES.has(t)) return t; }
+    return null;
+  }
+
+  const companyInvestors = {};
+  companyIds.forEach(c => { companyInvestors[c] = []; });
+  rawNodes.forEach(n => {
+    if (COMPANIES.has(n.id)) return;
+    const pc = getPrimaryCompany(n.id);
+    if (pc && companyInvestors[pc]) companyInvestors[pc].push(n.id);
+  });
+
+  const COLS_PER_CLUSTER = 5;
+  const COL_W = 120;
+  const ROW_H  = 115;
+  const CLUSTER_GAP = 90;
+  const GRID_TOP = 210;
+
+  const clusterWidths = companyIds.map(cid => {
+    const n = companyInvestors[cid].length;
+    return Math.min(Math.max(n, 1), COLS_PER_CLUSTER) * COL_W;
+  });
+
+  let curX = 120;
+  const companyX = companyIds.map((cid, ci) => {
+    const cx = curX + clusterWidths[ci] / 2;
+    curX += clusterWidths[ci] + CLUSTER_GAP;
+    return cx;
+  });
+
+  const posMap = {};
+  companyIds.forEach((cid, ci) => {
+    posMap[cid] = { x: companyX[ci], y: companyY };
+    const investors = companyInvestors[cid];
+    const cols = Math.min(investors.length, COLS_PER_CLUSTER);
+    const gridLeft = companyX[ci] - (cols * COL_W) / 2 + COL_W / 2;
+    investors.forEach((inv, ii) => {
+      posMap[inv] = {
+        x: gridLeft + (ii % COLS_PER_CLUSTER) * COL_W,
+        y: GRID_TOP + Math.floor(ii / COLS_PER_CLUSTER) * ROW_H
+      };
+    });
+  });
+  rawNodes.forEach(n => { if (!posMap[n.id]) posMap[n.id] = { x: curX + 100, y: GRID_TOP }; });
+
+  const cyNodes = rawNodes.map(n => {
+    const type = classify(n.id);
+    return { data: { id:n.id, label:n.name, type, color:typeColors[type], size:typeSize[type] }, position:posMap[n.id] };
+  });
+
+  let ei = 0;
+  const cyEdges = rawEdges.map(e => ({
+    data: { id:'e'+(ei++), source:e.from, target:e.to, label:e.label,
+            relType:e.label.toLowerCase(), capital:capitalData[e.from+'->'+e.to]||null }
+  }));
+
+  // ─── CYTOSCAPE STYLE DEFINITION ─────────────────────────────────────────────
+  const CY_STYLE = [
+    { selector:'node', style:{
+      'background-color':'data(color)',
+      'width':'data(size)', 'height':'data(size)',
+      'label':'data(label)',
+      'font-size':'8px', 'color':'#444',
+      'text-valign':'bottom', 'text-halign':'center',
+      'text-margin-y':'4px', 'text-max-width':'100px',
+      'text-wrap':'wrap',
+      'text-background-color':'#f5f4f2',
+      'text-background-opacity':0.88,
+      'text-background-padding':'2px',
+      'text-background-shape':'roundrectangle',
+      'border-width':'1.5px', 'border-color':'rgba(0,0,0,0.08)',
+      'font-family':'"Inter",system-ui,sans-serif',
+      'transition-property':'opacity', 'transition-duration':'0.15s'
+    }},
+    { selector:'node[type="company"]', style:{
+      'border-width':'2px', 'border-color':'rgba(107,99,212,0.4)',
+      'font-size':'9px', 'color':'#222', 'font-weight':'600',
+      'text-max-width':'100px'
+    }},
+    { selector:'edge', style:{
+      'width':'0.8px',
+      'line-color':'rgba(0,0,0,0.1)',
+      'target-arrow-color':'rgba(0,0,0,0.1)',
+      'target-arrow-shape':'triangle', 'arrow-scale':'0.5',
+      'curve-style':'unbundled-bezier',
+      'control-point-distances':'40', 'control-point-weights':'0.5',
+      'transition-property':'opacity,width,line-color', 'transition-duration':'0.15s'
+    }},
+    { selector:'edge[relType="lead investor"]', style:{
+      'width':'1.6px',
+      'line-color':'rgba(212,168,67,0.7)',
+      'target-arrow-color':'rgba(212,168,67,0.7)'
+    }},
+    { selector:'edge[relType="parent company"]', style:{
+      'width':'1.6px',
+      'line-color':'rgba(192,60,60,0.5)',
+      'target-arrow-color':'rgba(192,60,60,0.5)',
+      'line-style':'dashed', 'line-dash-pattern':[6,3]
+    }},
+    { selector:'edge[relType="angel"]', style:{
+      'line-color':'rgba(192,96,122,0.4)',
+      'target-arrow-color':'rgba(192,96,122,0.4)'
+    }},
+    { selector:'node.highlighted', style:{ 'opacity':1, 'border-width':'2.5px', 'border-color':'#6b63d4' }},
+    { selector:'node.faded',       style:{ 'opacity':0.1 }},
+    { selector:'edge.highlighted', style:{ 'opacity':1, 'width':'1.5px', 'line-color':'rgba(107,99,212,0.5)', 'target-arrow-color':'rgba(107,99,212,0.5)' }},
+    { selector:'edge.faded',       style:{ 'opacity':0.04 }}
+  ];
+
+  // ─── PREVIEW GRAPH (thumbnail, non-interactive) ───────────────────────────────
+  let cy2Preview;
+
+  function initPreviewGraph() {
+    cy2Preview = cytoscape({
+      container: document.getElementById('cy2'),
+      elements: { nodes: cyNodes, edges: cyEdges },
+      layout: { name:'preset' },
+      style: CY_STYLE,
+      wheelSensitivity:0, minZoom:0.06, maxZoom:4,
+      userZoomingEnabled:false, userPanningEnabled:false,
+      boxSelectionEnabled:false, autoungrabify:true
+    });
+    cy2Preview.nodes().lock();
+    cy2Preview.fit(cy2Preview.nodes(), 40);
+  }
+
+  // ─── FULLSCREEN GRAPH (interactive) ──────────────────────────────────────────
+  let cyFs;
+
+  function initFullscreenGraph() {
+    cyFs = cytoscape({
+      container: document.getElementById('cy2-fs'),
+      elements: { nodes: cyNodes, edges: cyEdges },
+      layout: { name:'preset' },
+      style: CY_STYLE,
+      wheelSensitivity:0.3, minZoom:0.08, maxZoom:4,
+      userZoomingEnabled:true, userPanningEnabled:true
+    });
+
+    cyFs.nodes().lock();
+    cyFs.fit(cyFs.nodes(), 40);
+
+    const etip = document.getElementById('wm-etip');
+    const overlay = document.getElementById('graph-fs-overlay');
+
+    cyFs.on('tap', 'edge', function(evt) {
+      const e = evt.target, rp = evt.renderedPosition;
+      const cap = e.data('capital'), rel = e.data('label');
+      const src = cyFs.getElementById(e.data('source')).data('label');
+      const tgt = cyFs.getElementById(e.data('target')).data('label');
+      etip.innerHTML = `<strong style="color:#333">${src} → ${tgt}</strong><br><span style="color:#888">${rel}</span>${cap ? '<br><span style="color:#c47d10;font-weight:500">💰 '+cap+'</span>' : ''}`;
+      etip.style.display = 'block';
+      // position tooltip relative to the overlay (offset by header height)
+      let lx = rp.x + 14, ly = rp.y + 14 + 40;
+      if (lx + 230 > overlay.offsetWidth) lx = rp.x - 235;
+      if (ly + 90  > overlay.offsetHeight) ly = rp.y - 95 + 40;
+      etip.style.left = lx+'px'; etip.style.top = ly+'px';
+    });
+
+    cyFs.on('tap', 'node', function(evt) {
+      etip.style.display = 'none';
+      const node = evt.target, d = node.data();
+      document.getElementById('ws-name').textContent = d.label;
+      const tl = { company:'Company', vc:'VC / Fund', angel:'Angel investor', corporate:'Corporate' };
+      document.getElementById('ws-type').textContent = tl[d.type] || d.type;
+
+      const connected   = node.connectedEdges();
+      const asInvestor  = connected.filter(e => e.target().id() === node.id());
+      const asSource    = connected.filter(e => e.source().id() === node.id());
+      let html = '';
+      if (asInvestor.length > 0) {
+        html += '<div class="ws-section-head">Backed by</div>';
+        asInvestor.forEach(e => {
+          const b = badge(e.data('label')), cap = e.data('capital');
+          html += `<div class="ws-item"><span class="ws-badge ${b.c}">${b.l}</span><span>${e.source().data('label')}</span>${cap?'<span style="color:#c47d10;font-size:8px;margin-left:auto;flex-shrink:0">'+cap+'</span>':''}</div>`;
+        });
+      }
+      if (asSource.length > 0) {
+        html += '<div class="ws-section-head" style="margin-top:10px">Invested in</div>';
+        asSource.forEach(e => {
+          const b = badge(e.data('label')), cap = e.data('capital');
+          html += `<div class="ws-item"><span class="ws-badge ${b.c}">${b.l}</span><span>${e.target().data('label')}</span>${cap?'<span style="color:#c47d10;font-size:8px;margin-left:auto;flex-shrink:0">'+cap+'</span>':''}</div>`;
+        });
+      }
+      if (!html) html = '<div style="color:#aaa;font-size:9px;padding:4px 0">No connections</div>';
+      document.getElementById('ws-conn').innerHTML = html;
+      renderSources(d.label);
+      document.getElementById('wm-sidebar').style.display = 'block';
+
+      cyFs.elements().removeClass('highlighted faded');
+      const nbh = node.closedNeighborhood();
+      cyFs.elements().difference(nbh).addClass('faded');
+      nbh.addClass('highlighted');
+    });
+
+    cyFs.on('tap', function(evt) {
+      if (evt.target === cyFs) {
+        cyFs.elements().removeClass('highlighted faded');
+        document.getElementById('wm-sidebar').style.display = 'none';
+        etip.style.display = 'none';
+      }
+    });
+  }
+
+  // ─── FULLSCREEN OPEN / CLOSE ──────────────────────────────────────────────────
+  function openGraphFullscreen() {
+    const overlay = document.getElementById('graph-fs-overlay');
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    // init fullscreen graph on first open, then just resize
+    if (!cyFs) {
+      setTimeout(() => {
+        initFullscreenGraph();
+      }, 50);
+    } else {
+      setTimeout(() => {
+        cyFs.resize();
+        cyFs.fit(cyFs.nodes(':visible'), 40);
+      }, 50);
+    }
+  }
+
+  function closeGraphFullscreen() {
+    const overlay = document.getElementById('graph-fs-overlay');
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('wm-sidebar').style.display = 'none';
+    document.getElementById('wm-etip').style.display = 'none';
+  }
+
+  // close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeGraphFullscreen();
+  });
+
+  // ─── FILTER / SEARCH / RESET (operate on fullscreen instance) ────────────────
+  function badge(rel) {
+    const r = (rel||'').toLowerCase();
+    if (r.includes('lead'))   return { c:'ws-lead',   l:'Lead' };
+    if (r.includes('angel'))  return { c:'ws-angel',  l:'Angel' };
+    if (r.includes('parent')) return { c:'ws-parent', l:'Parent' };
+    return                           { c:'ws-inv',     l:'Investor' };
+  }
+
+  function wmFilter(type) {
+    if (!cyFs) return;
+    document.querySelectorAll('.wm-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('wbtn-'+type)?.classList.add('active');
+    cyFs.elements().removeClass('highlighted faded');
+    document.getElementById('wm-sidebar').style.display = 'none';
+    if (type === 'all') { cyFs.nodes().show(); cyFs.edges().show(); }
+    else {
+      cyFs.nodes().forEach(n => {
+        if (n.data('type') === type || n.data('type') === 'company') n.show(); else n.hide();
+      });
+      cyFs.edges().forEach(e => {
+        if (e.source().visible() && e.target().visible()) e.show(); else e.hide();
+      });
+    }
+    cyFs.fit(cyFs.nodes(':visible'), 40);
+  }
+
+  function wmSearch(val) {
+    if (!cyFs) return;
+    if (!val) { cyFs.elements().removeClass('highlighted faded'); return; }
+    const lo = val.toLowerCase();
+    const matches = cyFs.nodes().filter(n => n.data('label').toLowerCase().includes(lo));
+    if (matches.length > 0) {
+      cyFs.elements().removeClass('highlighted faded');
+      const nbh = matches.reduce((acc,n) => acc.union(n.closedNeighborhood()), cyFs.collection());
+      cyFs.elements().difference(nbh).addClass('faded');
+      nbh.addClass('highlighted');
+      cyFs.animate({ fit:{ eles:matches, padding:100 }, duration:400 });
+    }
+  }
+
+  function wmReset() {
+    if (!cyFs) return;
+    cyFs.elements().removeClass('highlighted faded');
+    cyFs.nodes().show(); cyFs.edges().show();
+    document.getElementById('wm-sidebar').style.display = 'none';
+    document.getElementById('wm-etip').style.display = 'none';
+    cyFs.animate({ fit:{ eles:cyFs.nodes(), padding:40 }, duration:400 });
+    document.querySelectorAll('.wm-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('wbtn-all').classList.add('active');
+  }
+
+  window.wmFilter = wmFilter;
+  window.wmSearch = wmSearch;
+  window.wmReset  = wmReset;
+  window.fetchArena = fetchArena;
+  window.openGraphFullscreen  = openGraphFullscreen;
+  window.closeGraphFullscreen = closeGraphFullscreen;
+
+  setTimeout(initPreviewGraph, 100);
+  </script>
+
+  <!-- ── PAGE SCRIPTS ── -->
+  <script>
+    // ── CLOCK ──
+    function tick() {
+      const n = new Date();
+      const p = v => String(v).padStart(2,'0');
+      document.getElementById('clock').textContent =
+        `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+    }
+    tick(); setInterval(tick, 1000);
+
+    // ── CUSTOM CURSOR ──
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 2}px, ${my - 2}px)`;
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 12}px, ${ry - 12}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // ── PERSPECTIVE GRID CANVAS ──
+    const canvas = document.getElementById('grid-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let scrollY = 0;
+    window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width, h = canvas.height;
+      const horizon = h * 0.52;
+      const vp = { x: w / 2, y: horizon };
+      const cols = 14, rows = 20;
+      const spread = w * 1.8, depth = h * 1.4;
+      const speed = scrollY * 0.0004;
+
+      ctx.lineWidth = 0.5;
+
+      for (let i = 0; i <= cols; i++) {
+        const t = i / cols;
+        const xBottom = (t - 0.5) * spread + w / 2;
+        const alpha = 0.06 + 0.04 * Math.sin(t * Math.PI);
+        ctx.strokeStyle = `rgba(138,186,26,${alpha})`;
+        ctx.beginPath();
+        ctx.moveTo(vp.x, vp.y);
+        ctx.lineTo(xBottom, h + 20);
+        ctx.stroke();
+      }
+
+      for (let j = 0; j <= rows; j++) {
+        const t = Math.pow((j / rows + speed) % 1, 1.6);
+        const y = vp.y + t * depth;
+        if (y > h + 10) continue;
+        const x0 = vp.x - (spread / 2) * t;
+        const x1 = vp.x + (spread / 2) * t;
+        const alpha = t * 0.12;
+      

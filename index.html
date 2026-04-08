@@ -78,15 +78,30 @@
       letter-spacing: 0.2em;
     }
 
-    .header-center {
-      font-family: var(--font-serif);
-      font-size: 11px;
+    .header-nav {
+      font-family: var(--font-mono);
+      font-size: 10px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text-dim);
+      display: flex;
+      gap: 24px;
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+    }
+
+    .header-nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding-bottom: 2px;
+    }
+
+    .header-nav a:hover { color: var(--lime); }
+
+    .header-nav a.active {
+      color: var(--lime);
+      border-bottom: 1px solid var(--lime);
     }
 
     .header-right {
@@ -444,7 +459,10 @@
 
   <header>
     <div class="header-left"><a href="#">Kiru Mehari</a></div>
-    <div class="header-center">Spatial Index</div>
+    <nav class="header-nav">
+      <a href="index.html" class="active">Work</a>
+      <a href="research.html">Research</a>
+    </nav>
     <div class="header-right" id="clock">00:00:00</div>
   </header>
 
@@ -702,11 +720,11 @@
       <a href="https://github.com/projectmehari" target="_blank">GitHub</a>
     </div>
     <div class="footer-email">
-      <a href="mailto:projectmehari@gmail.com">projectmehari@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#0474766b6e61677069616c65766d446369656d682a676b69"><span class="__cf_email__" data-cfemail="f68684999c9395829b939e97849fb6919b979f9ad895999b">[email&#160;protected]</span></a>
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ── CLOCK ──
     function tick() {
       const n = new Date();
@@ -810,14 +828,4 @@
     scenes.forEach(s => io.observe(s));
 
     // ── PARALLAX DEPTH on scroll ──
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      scenes.forEach((s, i) => {
-        const depth = (i + 1) * 0.02;
-        s.style.transform = `translateY(${scrollY * depth * -0.3}px)`;
-      });
-    });
-  </script>
-
-</body>
-</html>
+    window.addEventLis
