@@ -1,3 +1,4 @@
 .vercel
 goals.md
 .DS_Store
+.env*.local
