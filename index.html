@@ -442,12 +442,15 @@
     }
 
     @media (max-width: 600px) {
+      .cursor, .cursor-ring { display: none; }
       .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
       .footer-sep { display: none; }
       .card-body { grid-template-columns: 1fr; }
       .card-actions { flex-direction: row; align-items: center; }
       .card-num { display: none; }
       .intro-title { font-size: 42px; }
+      .header-nav { position: static; transform: none; gap: 12px; font-size: 9px; }
+      .header-right { display: none; }
     }
   </style>
 </head>
@@ -724,7 +727,8 @@
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
     // ── CLOCK ──
     function tick() {
       const n = new Date();
@@ -832,4 +836,10 @@
     scenes.forEach(s => io.observe(s));
 
     // ── PARALLAX DEPTH on scroll ──
-    window.addEventLis
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+    });
+
+  </script>
+</body>
+</html>
