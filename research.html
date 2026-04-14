@@ -1358,4 +1358,30 @@
         const x0 = vp.x - (spread / 2) * t;
         const x1 = vp.x + (spread / 2) * t;
         const alpha = t * 0.12;
-      
+        ctx.strokeStyle = `rgba(138,186,26,${alpha})`;
+        ctx.beginPath();
+        ctx.moveTo(x0, y);
+        ctx.lineTo(x1, y);
+        ctx.stroke();
+      }
+
+      const grad = ctx.createLinearGradient(0, horizon - 30, 0, horizon + 30);
+      grad.addColorStop(0, 'transparent');
+      grad.addColorStop(0.5, 'rgba(138,186,26,0.06)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, horizon - 30, w, 60);
+    }
+
+    function render() {
+      drawGrid();
+      requestAnimationFrame(render);
+    }
+    render();
+
+  </script>
+  
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+</body>
+</html>
