@@ -318,7 +318,7 @@
       font-size: clamp(13px, 1.4vw, 15px);
       line-height: 1.7;
       color: rgba(138,186,26,0.7);
-      max-width: 52ch;
+      max-width: 100%;
     }
 
     .card-tags {
@@ -474,15 +474,53 @@
       <div class="intro-eyebrow">3DGS · World Models · Spatial Computing</div>
       <h1 class="intro-title">Spatial Index</h1>
       <p class="intro-sub">
-        <span>05</span> experiments across the full spatial pipeline —<br>
+        <span>07</span> experiments across the full spatial pipeline —<br>
         capture · reconstruction · synthesis · navigation
       </p>
     </div>
 
     <div class="scene-track">
 
-      <!-- Scene 06 — Memoria -->
+      <!-- Scene 07 — Composer -->
       <div class="scene" data-idx="0">
+        <div class="scene-card" onclick="window.open('https://composer.spatial-index.xyz','_blank')">
+          <div class="card-topbar">
+            <div class="card-topbar-left">
+              <div class="card-dot"></div>
+              <span class="card-id">scene_07 · COMPOSER</span>
+            </div>
+            <span class="card-status live">● live</span>
+          </div>
+          <div class="card-preview">
+            <img src="composer.gif" alt="COMPOSER — spatial audio composition environment" />
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <div class="card-title">Spatial Audio Composition Environment</div>
+              <div class="card-subtitle">Resonance Audio · ElevenLabs · AssemblyAI · Web Audio API → Binaural Field</div>
+              <p class="card-desc">A browser-native composition environment for placing speakers in space. Sources are positioned across a radar interface and rendered binaurally via Resonance Audio's HRTF engine — field recordings, generated material, and diarized voices occupying the same spatial field. Paste a public audio URL and AssemblyAI detects each speaker, routing detected voices into the active composition as positioned sources. If the speaker count exceeds the current layout, a mismatch dialog offers to switch compositions or expand to fit.</p>
+              <div class="card-tags">
+                <span class="card-tag">Resonance Audio</span>
+                <span class="card-tag">ElevenLabs</span>
+                <span class="card-tag">AssemblyAI</span>
+                <span class="card-tag">Web Audio API</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="card-num">07</div>
+              <a class="card-link" href="https://composer.spatial-index.xyz" target="_blank" onclick="event.stopPropagation()">↗ Demo</a>
+              <a class="card-link" href="https://github.com/projectmehari/spatial-index" target="_blank" onclick="event.stopPropagation()">↗ Source</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-coords">45.5017° N, 73.5673° W</span>
+            <span class="card-format">OUTPUT · BINAURAL FIELD · SPEAKER DIARIZATION</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 06 — Memoria -->
+      <div class="scene" data-idx="1">
         <div class="scene-card" onclick="window.open('https://memoria.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -520,7 +558,7 @@
       </div>
 
       <!-- Scene 05 — Atlas -->
-      <div class="scene" data-idx="1">
+      <div class="scene" data-idx="2">
         <div class="scene-card" onclick="window.open('https://atlas.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -558,7 +596,7 @@
       </div>
 
       <!-- Scene 04 — Durée -->
-      <div class="scene" data-idx="2">
+      <div class="scene" data-idx="3">
         <div class="scene-card" onclick="window.open('https://duree.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -596,7 +634,7 @@
       </div>
 
       <!-- Scene 03 — DepthShift -->
-      <div class="scene" data-idx="3">
+      <div class="scene" data-idx="4">
         <div class="scene-card" onclick="window.open('https://depthshift.spatial-index.xyz','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -634,7 +672,7 @@
       </div>
 
       <!-- Scene 02 — Marble -->
-      <div class="scene" data-idx="4">
+      <div class="scene" data-idx="5">
         <div class="scene-card" onclick="window.open('https://marble.worldlabs.ai/world/4305a51d-e2f3-4127-a3b3-6a6c43c2b9fc','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
@@ -672,7 +710,7 @@
       </div>
 
       <!-- Scene 01 — SHARP -->
-      <div class="scene" data-idx="5">
+      <div class="scene" data-idx="6">
         <div class="scene-card" onclick="window.open('https://huggingface.co/spaces/verymehari/SharpView','_blank')">
           <div class="card-topbar">
             <div class="card-topbar-left">
