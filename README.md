@@ -3,6 +3,10 @@ A scroll-driven portfolio navigator for spatial computing experiments. Each proj
 
 ## Projects
 
+**07 — Composer**
+A browser-native composition environment for placing speakers in space. Sources are positioned across a radar interface and rendered binaurally via Resonance Audio's HRTF engine — field recordings, generated material, and diarized voices occupying the same spatial field. Paste a public audio URL and AssemblyAI detects each speaker, routing detected voices into the active composition as positioned sources. If the speaker count exceeds the current layout, a mismatch dialog offers to switch compositions or expand to fit.
+[composer.spatial-index.xyz](https://composer.spatial-index.xyz)
+
 **06 — Memoria**
 A memory palace for music. Photogrammetric scans as spatial containers, with tracks, images, and notes pinned as positional nodes in 3D space. A mix is a temporal fragment — a moment of curation that captures a mood, a context, a way of listening that will never quite repeat. Memoria treats that fragment as something worth preserving spatially. Closer to an archive than a queue. Closer to a walk than a stream. Built with React Three Fiber, Three.js, and Bun. Supports .ply and .glb scenes with community submissions.
 
