@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- FILL: title, description -->
+  <title>SCENE_NAME · Scene XX · Spatial Index</title>
+  <meta name="description" content="SCENE_ONE_LINE_DESCRIPTION" />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- TOPBAR -->
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <!-- FILL: scene id + name -->
+    <span class="si-topbar-center">Scene_XX · SCENE_NAME</span>
+    <!-- FILL: "● live" or "○ wip" -->
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <!-- PROJECT HEADER -->
+  <div class="si-project-header">
+    <div>
+      <!-- FILL: scene number, category tag, date -->
+      <div class="project-eyebrow">Scene XX · CATEGORY · MON YEAR</div>
+      <!-- FILL: scene name -->
+      <h1 class="project-title">Scene Name</h1>
+      <!-- FILL: tech stack one-liner -->
+      <div class="project-subtitle">Tech A · Tech B · Tech C → Output Format</div>
+      <!-- FILL: 1–2 sentence lede from your .md file -->
+      <p class="project-lede">One or two sentence lede that captures the core idea of this scene.</p>
+      <!-- FILL: tags from the card on index.html -->
+      <div class="tag-row">
+        <span class="ptag">Tag 1</span>
+        <span class="ptag">Tag 2</span>
+        <span class="ptag">Tag 3</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <!-- FILL: city, date, output type -->
+      <div>City, Province</div>
+      <div>Mon Year</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>.FORMAT</div>
+      <div>Output Type</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="si-body">
+
+    <!-- TOC — keep section hrefs in sync with section ids below -->
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Problem</span>
+      </a>
+      <a class="toc-item" href="#context">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Context</span>
+      </a>
+      <a class="toc-item" href="#approach">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Approach</span>
+      </a>
+      <a class="toc-item" href="#stack">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Stack</span>
+      </a>
+      <a class="toc-item" href="#reflections">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Reflections</span>
+      </a>
+      <a class="toc-item" href="#buildlog">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Build Log</span>
+      </a>
+      <div class="toc-divider"></div>
+      <!-- FILL: demo URL -->
+      <a class="toc-demo-link" href="https://SCENE.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="si-content">
+
+      <!-- ─────────────────────────────
+           01 · PROBLEM
+           What existed before this?
+           What was missing or broken?
+           ───────────────────────────── -->
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <!-- FILL -->
+        <h2 class="section-heading">Short evocative heading for the problem.</h2>
+        <p class="body-p">First paragraph of problem framing from your .md file.</p>
+        <p class="body-p">Optional second paragraph.</p>
+        <!-- Optional callout -->
+        <!-- <div class="callout"><p class="callout-text">A pull quote from your notes.</p></div> -->
+        <!-- MEDIA: use cols-1 for hero, cols-2 or cols-3 for multiples -->
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <!-- FILL: gif / screenshot. All assets live one level up at ../FILENAME -->
+            <img src="../SCENE.gif" alt="SCENE_NAME overview" />
+            <div class="media-caption">SCENE_NAME · overview</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────
+           02 · CONTEXT
+           Research, references, why now?
+           Heideggerian / cultural angle.
+           ───────────────────────────── -->
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <!-- FILL -->
+        <h2 class="section-heading">Short heading situating the project historically or culturally.</h2>
+        <p class="body-p">Context paragraph from your .md file.</p>
+        <!-- MEDIA: optional, 1–2 reference images -->
+        <!--
+        <div class="media-grid cols-2">
+          <div class="media-item">
+            <img src="../SCENE-ref-1.jpg" alt="Reference image 1" />
+            <div class="media-caption">Caption</div>
+          </div>
+          <div class="media-item">
+            <img src="../SCENE-ref-2.jpg" alt="Reference image 2" />
+            <div class="media-caption">Caption</div>
+          </div>
+        </div>
+        -->
+      </section>
+
+      <!-- ─────────────────────────────
+           03 · APPROACH
+           How did you build it?
+           Key decisions, tradeoffs, pivots.
+           ───────────────────────────── -->
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <!-- FILL -->
+        <h2 class="section-heading">Short heading describing the core technical or design approach.</h2>
+        <p class="body-p">Approach paragraph.</p>
+        <p class="body-p">Optional second paragraph.</p>
+        <!-- MEDIA: process shots, 1–3 -->
+        <!--
+        <div class="media-grid cols-2">
+          <div class="media-item">
+            <img src="../SCENE-detail-1.jpg" alt="Detail 1" />
+            <div class="media-caption">Caption</div>
+          </div>
+          <div class="media-item">
+            <img src="../SCENE-detail-2.jpg" alt="Detail 2" />
+            <div class="media-caption">Caption</div>
+          </div>
+        </div>
+        -->
+        <!-- <div class="callout"><p class="callout-text">Pull quote.</p></div> -->
+      </section>
+
+      <!-- ─────────────────────────────
+           04 · STACK
+           Fill the four cells.
+           Add more .stack-cell divs if needed (grid auto-fits).
+           ───────────────────────────── -->
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <!-- FILL -->
+        <h2 class="section-heading">Short heading.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <!-- FILL -->
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Library A · Library B</div>
+          </div>
+          <div class="stack-cell">
+            <!-- FILL -->
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">Runtime · Storage layer</div>
+          </div>
+          <div class="stack-cell">
+            <!-- FILL -->
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Input format → transform → output format</div>
+          </div>
+          <div class="stack-cell">
+            <!-- FILL -->
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Platform · URL</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────
+           05 · REFLECTIONS
+           What did you learn?
+           What would you do differently?
+           What's next?
+           ───────────────────────────── -->
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <!-- FILL -->
+        <h2 class="section-heading">What the project revealed.</h2>
+        <p class="body-p">Reflection paragraph from your .md file.</p>
+        <p class="body-p">Optional: what's next for this scene.</p>
+      </section>
+
+      <!-- ─────────────────────────────
+           06 · BUILD LOG
+           Chronological milestones.
+           Copy from your .md file.
+           ───────────────────────────── -->
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <!-- FILL -->
+        <h2 class="section-heading">From idea to shipped.</h2>
+        <div class="build-log">
+
+          <!-- COPY AND REPEAT THIS BLOCK PER MILESTONE -->
+          <div class="log-item">
+            <!-- FILL: Mon YYYY -->
+            <div class="log-date">Mon YYYY</div>
+            <div>
+              <!-- FILL: milestone name -->
+              <div class="log-title">Milestone name</div>
+              <!-- FILL: 1–3 sentences from your notes -->
+              <div class="log-text">What happened, what was decided, what broke, what shipped.</div>
+            </div>
+          </div>
+
+          <div class="log-item">
+            <div class="log-date">Mon YYYY</div>
+            <div>
+              <div class="log-title">Milestone name</div>
+              <div class="log-text">Description.</div>
+            </div>
+          </div>
+
+          <div class="log-item">
+            <div class="log-date">Mon YYYY</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">Shipped to SCENE.spatial-index.xyz.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <!-- FILL: coords, scene number of total, prev/next scene links -->
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene XX of YY</span>
+    <nav class="footer-scene-nav">
+      <!-- FILL or add class="disabled" if first/last scene -->
+      <a class="footer-nav-link" href="PREV_SCENE.html">← Scene XX · PREV_NAME</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="NEXT_SCENE.html">Scene XX · NEXT_NAME →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>
