@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Composer · Scene 07 · Spatial Index</title>
+  <meta name="description" content="Browser-native spatial audio composition with radar-based source placement, anchored voice layouts, speaker diarization, and binaural rendering." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_07 · Composer</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 07 · Spatial Audio · 2026</div>
+      <h1 class="project-title">Composer</h1>
+      <div class="project-subtitle">Resonance Audio · ElevenLabs · AssemblyAI · Web Audio API → Binaural Field</div>
+      <p class="project-lede">Composer turns spatial mixing into a browser-native composition surface. Voices, field recordings, and generated audio are placed as discrete sources in a shared radar field and rendered binaurally as a navigable scene.</p>
+      <div class="tag-row">
+        <span class="ptag">Resonance Audio</span>
+        <span class="ptag">ElevenLabs</span>
+        <span class="ptag">AssemblyAI</span>
+        <span class="ptag">Web Audio API</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>2026</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>Binaural Field</div>
+      <div>Speaker Diarization</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://composer.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Most browser audio tools flatten space into a timeline.</h2>
+        <p class="body-p">Conventional DAWs are built around tracks, lanes, and left-right pan. That works for arrangement, but it collapses the feeling of multiple voices sharing a room into a narrow strip of controls.</p>
+        <p class="body-p">Composer starts from a different assumption: source position is part of the composition itself. The project’s core interface is a large bird's-eye radar where every sound source is visible relative to the listener and can be selected, dragged, frozen, pinned, or muted directly in space.</p>
+        <div class="callout">
+          <p class="callout-text">"Not a timeline with panning. A field with inhabitants."</p>
+        </div>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../Composer.gif" alt="Composer spatial audio interface overview" />
+            <div class="media-caption">Composer · spatial radar interface · binaural playback</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">Spatial audio as interface, not post-production effect.</h2>
+        <p class="body-p">The project sits between web audio tooling and installation logic. Instead of treating HRTF rendering as polish applied at the end, Composer makes spatial placement the primary authoring metaphor from the first interaction.</p>
+        <p class="body-p">The live system separates ambient environment from composition structure. That makes it possible to pair a mood layer with anchored conversational layouts, so the same field can work as an instrument, a staging surface, or a spatial interview room.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">A radar layout backed by compositions, drift, and diarization.</h2>
+        <p class="body-p">Sources are positioned across a radar interface and rendered binaurally through Resonance Audio. The placement model is intentionally direct: what you see in the field is what you hear in the headphones. In ambient mode, clouds drift through the field as looping objects; in composition mode, named anchor slots define stable relational positions for voices.</p>
+        <p class="body-p">Composer supports layouts like the Dyad, Council, Journal, and Interview. Each template defines azimuth, elevation, and distance slots that can be filled manually or via speaker diarization.</p>
+        <p class="body-p">AssemblyAI handles speaker detection when a public audio URL or uploaded mix is ingested. Detected speakers are routed into the active composition as positioned sources. When the number of speakers exceeds the current layout, Composer offers a mismatch flow so the field can switch compositions or expand to fit.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">Web-native spatial mixing with automated voice parsing.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Vanilla JS · Web Audio API · Resonance Audio · browser UI radar field</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">AssemblyAI diarization · ElevenLabs voice generation · uploaded audio and public URL ingestion</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Audio source → drifting cloud or anchored slot → speaker parsing when needed → positioned source graph → binaural render</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Vercel · composer.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">Spatial composition becomes an editing decision much earlier.</h2>
+        <p class="body-p">The main lesson is that diarization is not just a transcription feature. Once each voice becomes a movable or anchorable source, analysis turns directly into arrangement. The browser stops being a playback surface and becomes a staging environment.</p>
+        <p class="body-p">The larger idea in the progress notes is persistence across sessions: shared arrangements, ghost traces, and saved spatial structures that make the field feel less like a one-off mixer and more like a place you return to.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From source ingestion to spatial field.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Radar composition model</div>
+              <div class="log-text">Defined the browser composition surface around a central radar, making spatial layout the primary editing metaphor instead of track lanes.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Cloud and composition system</div>
+              <div class="log-text">Built interactive sound clouds with drag, freeze, mute, and pin controls, then added named composition templates for anchored voice layouts.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Speaker routing</div>
+              <div class="log-text">Integrated AssemblyAI diarization so uploaded mixes could be separated by speaker and routed into compatible compositions, including mismatch handling for overflow cases.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Spatial environments</div>
+              <div class="log-text">Expanded the instrument into a spatial conversation tool with environment presets, radar-centered interaction, uploaded sources, and compositional anchor roles.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">composer.spatial-index.xyz live with browser-native binaural composition, drifting clouds, anchored voice layouts, and diarized source placement.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 07 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="memoria.html">← Scene 06 · Memoria</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link disabled" href="#">Scene 08 →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

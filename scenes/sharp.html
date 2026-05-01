@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHARP · Scene 01 · Spatial Index</title>
+  <meta name="description" content="Single-image monocular view synthesis into a 3D Gaussian Splat using Apple ML SHARP." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_01 · SHARP</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 01 · Monocular Synthesis · 2025</div>
+      <h1 class="project-title">SHARP</h1>
+      <div class="project-subtitle">Apple ML · SHARP · Single Image → 3DGS</div>
+      <p class="project-lede">SHARP starts with a single photograph and ends with a full 3D Gaussian Splat. The scene established the reconstruction branch of Spatial Index by testing how far monocular inference could go without multi-view capture or photogrammetry.</p>
+      <div class="tag-row">
+        <span class="ptag">Python</span>
+        <span class="ptag">Gradio</span>
+        <span class="ptag">3DGS</span>
+        <span class="ptag">.ply</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Toronto, ON</div>
+      <div>2025</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>.PLY</div>
+      <div>Gaussian Splat</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://sharpview.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">3D capture usually asks for too much setup.</h2>
+        <p class="body-p">Photogrammetry and multi-view reconstruction can produce rich scenes, but they require deliberate capture workflows, overlap discipline, and more input than many quick experiments can afford.</p>
+        <p class="body-p">SHARP asks what happens when that barrier collapses to a single image. If one photograph can become a Gaussian Splat in under a second, then spatial reconstruction becomes lightweight enough to use as a routine creative primitive.</p>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../SharpView.gif" alt="SHARP single image to Gaussian Splat overview" />
+            <div class="media-caption">SHARP · monocular view synthesis into a 3D Gaussian Splat</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">Inference replacing capture overhead.</h2>
+        <p class="body-p">This project sits at the beginning of the Spatial Index stack because it reframes reconstruction as an inference problem. Instead of carefully collecting a scene, SHARP tests how much spatial plausibility can be recovered from monocular input alone.</p>
+        <p class="body-p">That matters beyond convenience. It opens a path where everyday images become candidate spatial assets, not just references, and where 3DGS workflows can start from much looser source material.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">One image in, full splat out.</h2>
+        <p class="body-p">A single photograph is passed through Apple ML’s SHARP pipeline, which produces a full 3D Gaussian Splat without any multi-view capture stage. The output is exported as `.ply` and surfaced through a lightweight interface for inspection and sharing.</p>
+        <p class="body-p">The implementation follows the model pipeline closely rather than reinventing it, with the main goal being operational fluency: understand the data flow, make it accessible, and verify that the reconstruction could be used as input for later scenes.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">A minimal path into 3D Gaussian Splats.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Gradio interface · splat inspection viewer</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">Python ML pipeline · Apple ML SHARP model</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Single image → monocular inference → 3D Gaussian Splat → `.ply` export</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Hugging Face Spaces · sharpview.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">Fast reconstruction changes the cadence of experimentation.</h2>
+        <p class="body-p">SHARP made the broader project feasible by lowering the cost of entry into spatial output. Once splats can be created from single images, reconstruction stops being a special event and becomes something you can iterate on rapidly.</p>
+        <p class="body-p">It also exposed a practical limitation: using a model well is not the same as understanding it deeply. That tension shaped later scenes, where the goal shifted from just running pipelines to bending them into new interfaces and experiences.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From first image to first splat.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Pipeline adoption</div>
+              <div class="log-text">Set up and validated the SHARP monocular reconstruction workflow as the first working 3DGS path in the project.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Interface wrapper</div>
+              <div class="log-text">Exposed the model through a simple Gradio surface so single-image tests could be run and inspected quickly.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">PLY verification</div>
+              <div class="log-text">Confirmed that the generated splats could be exported as `.ply` and reused as inputs for downstream experiments.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">Published the Hugging Face Space and established Scene 01 as the baseline reconstruction experiment for Spatial Index.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">43.6532° N, 79.3832° W · Scene 01 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link disabled" href="#">← Scene 00</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="marble.html">Scene 02 · Marble →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

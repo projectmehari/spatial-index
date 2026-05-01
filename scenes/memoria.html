@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoria · Scene 06 · Spatial Index</title>
+  <meta name="description" content="A memory palace for music, built from scanned Montréal spaces, timestamped notes, and annotated mix scenes." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- TOPBAR -->
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_06 · Memoria</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <!-- PROJECT HEADER -->
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 06 · Community Memory · 2026</div>
+      <h1 class="project-title">Memoria</h1>
+      <div class="project-subtitle">Vite · React 19 · React Three Fiber · Bun → Annotated .ply / .glb</div>
+      <p class="project-lede">A memory palace for music. Each scanned Montréal space becomes a spatial container for a radio mix, with tracks, images, and fragments pinned into the environment as notes you walk through rather than read beside a player.</p>
+      <div class="tag-row">
+        <span class="ptag">React Three Fiber</span>
+        <span class="ptag">Three.js</span>
+        <span class="ptag">Bun</span>
+        <span class="ptag">Vite</span>
+        <span class="ptag">.ply / .glb</span>
+        <span class="ptag">Photogrammetry</span>
+        <span class="ptag">Spatial Notes</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>2026</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>.PLY / .GLB</div>
+      <div>Memory Archive</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="si-body">
+
+    <!-- TOC -->
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Problem</span>
+      </a>
+      <a class="toc-item" href="#context">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Context</span>
+      </a>
+      <a class="toc-item" href="#approach">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Approach</span>
+      </a>
+      <a class="toc-item" href="#stack">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Stack</span>
+      </a>
+      <a class="toc-item" href="#reflections">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Reflections</span>
+      </a>
+      <a class="toc-item" href="#buildlog">
+        <div class="toc-dot"></div>
+        <span class="toc-text">Build Log</span>
+      </a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://memoria.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="si-content">
+
+      <!-- 01 PROBLEM -->
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Playlists preserve tracks. They rarely preserve listening context.</h2>
+        <p class="body-p">A mix is a temporal fragment: a mood, a sequence, and a set of references that do not fit cleanly inside a streaming player. Standard archives keep the audio file, but they flatten the images, voice notes, influences, and spatial associations around it.</p>
+        <p class="body-p">Memoria treats the curation behind a mix as something worth preserving in its own right. The project turns liner notes into a place you move through rather than a paragraph you skim.</p>
+        <div class="callout">
+          <p class="callout-text">"Closer to an archive than a queue. Closer to a walk than a stream."</p>
+        </div>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../memoria.gif" alt="Memoria — spatial archive overview" />
+            <div class="media-caption">Memoria · spatial archive overview · memoria.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 CONTEXT -->
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">The memory palace made literal in scanned Montréal rooms.</h2>
+        <p class="body-p">The project draws on the classical method of loci: memory organized through spatial navigation. In Memoria, that logic becomes literal. You enter a point cloud or mesh of a real room, and the structure of the room becomes the structure of recall.</p>
+        <p class="body-p">The current scenes use scans made on an iPhone 15 Pro through Polycam in Montréal, with each space acting as a container for a Desire Path Radio mix. The archive becomes navigable through rooms rather than through a playlist queue.</p>
+      </section>
+
+      <!-- 03 APPROACH -->
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">Notes as coordinates, timestamps, and camera paths.</h2>
+        <p class="body-p">Each scene supports notes pinned in 3D space. A note can carry a label, description, and media attachment, plus an optional `mixTimestamp` that ties it to a precise moment in the audio.</p>
+        <p class="body-p">When playback reaches a timestamped note, the camera can fly directly to that point in the room. Clicking a note in the sidebar also seeks the audio and moves the viewer through the space. The result is a spatial liner note system rather than a static annotation layer.</p>
+        <p class="body-p">Scenes are curated without a heavy backend: scans, mix URLs, and exported annotation JSON files are assembled into preset scenes. That keeps the archive lightweight while still allowing contributor submissions.</p>
+        <div class="callout">
+          <p class="callout-text">"Closer to walking through an archive than playing a playlist."</p>
+        </div>
+      </section>
+
+      <!-- 04 STACK -->
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">A lightweight browser archive for scanned music spaces.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Vite 6 · React 19 · React Three Fiber v9 · Three.js</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend</div>
+            <div class="stack-cell-val">Bun · Zustand state · curator-controlled scene data</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">3D Pipeline</div>
+            <div class="stack-cell-val">Polycam on iPhone 15 Pro → GLB + PLY export → note and timestamp scene JSON</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Vercel · CDN-hosted audio streams · memoria.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 REFLECTIONS -->
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">Spatial notes make curation feel architectural.</h2>
+        <p class="body-p">The key shift in Memoria is editorial. Once notes have coordinates, sequence and placement become inseparable. A reference is no longer just attached to a mix; it occupies a position, and that position changes the reading of the whole archive.</p>
+        <p class="body-p">The contribution model also stays intentionally light. Instead of building a large account system, the project centers exported scene files and curator-reviewed additions. That keeps attention on the archive itself rather than on social mechanics around it.</p>
+      </section>
+
+      <!-- 06 BUILD LOG -->
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From room scan to spatial liner notes.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Scene capture</div>
+              <div class="log-text">Scanned three Montréal spaces on iPhone 15 Pro through Polycam and exported matching GLB + PLY pairs for browser use.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Annotation system</div>
+              <div class="log-text">Built note objects with labels, descriptions, media attachments, and optional mix timestamps so commentary could be placed directly into the scanned room.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Timestamp navigation</div>
+              <div class="log-text">Connected note timestamps to playback and camera motion so the viewer can fly to specific points in space as the mix reaches them.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Curated scene export</div>
+              <div class="log-text">Added a zero-backend export flow so annotations can be packaged as JSON and submitted alongside scans and mix URLs for manual curation.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2026</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">memoria.spatial-index.xyz live with three scanned rooms, three mixes, timestamped notes, and contributor-ready scene export.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 06 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="atlas.html">← Scene 05 · Atlas</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="composer.html">Scene 07 · Composer →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

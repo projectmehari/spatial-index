@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Durée · Scene 04 · Spatial Index</title>
+  <meta name="description" content="Video rendered as a spatial object, with stacked frames and Gemini-powered natural language retrieval." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_04 · Durée</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 04 · Temporal Space · 2025</div>
+      <h1 class="project-title">Durée</h1>
+      <div class="project-subtitle">Three.js · WebCodecs · GLSL · Gemini AI → Frame Stack</div>
+      <p class="project-lede">Durée treats video as a spatial object instead of a flat sequence. Every frame appears at once as a stack of translucent planes, turning time into something you can orbit, inspect, and query with language.</p>
+      <div class="tag-row">
+        <span class="ptag">Three.js</span>
+        <span class="ptag">WebCodecs</span>
+        <span class="ptag">GLSL</span>
+        <span class="ptag">Gemini</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>2025</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>Frame Stack</div>
+      <div>Temporal Object</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://duree.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Video players hide time behind a single current frame.</h2>
+        <p class="body-p">Standard playback makes time serial. You scrub, pause, and resume, but you only ever confront one slice of the video at once. That model is efficient, yet it obscures the full structure of motion and repetition distributed across the clip.</p>
+        <p class="body-p">Durée asks what happens when the timeline is unfolded into space. If all frames coexist simultaneously, then navigation through video becomes spatial inspection rather than linear transport.</p>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../duree.gif" alt="Durée frame stack overview" />
+            <div class="media-caption">Durée · full timeline rendered as a spatial stack</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">Duration translated into geometry.</h2>
+        <p class="body-p">The project inherits its name from Bergson’s sense of duration as lived, continuous time rather than a neutral sequence of discrete instants. In Durée, that intuition becomes visual and navigable: time is no longer hidden behind the playhead but built into the scene as depth.</p>
+        <p class="body-p">At the same time, the work sits inside a contemporary browser stack. WebCodecs, shader logic, and multimodal search become tools for turning a familiar media object into a temporal sculpture that can still be queried and explored interactively.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">Decode every frame, then stack the whole clip in 3D.</h2>
+        <p class="body-p">Durée renders all frames of a video simultaneously as semi-transparent planes distributed along a depth axis. Orbit controls let the viewer inspect the full stack from different angles, revealing density, repetition, and gesture across the clip as a single object.</p>
+        <p class="body-p">WebCodecs handles browser-native frame extraction while GLSL manages the visual treatment of the stack. Gemini AI search sits on top of that structure so users can query the video by natural language and jump toward the regions that semantically match the prompt.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">Temporal media decoded, stacked, and queried in-browser.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Three.js · custom GLSL materials · orbitable frame volume</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">Gemini multimodal search · edge proxy infrastructure</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Video file → WebCodecs frame decode → stacked planes → natural language retrieval</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Vercel · duree.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">Search and visualization reinforce each other.</h2>
+        <p class="body-p">Durée made clear that semantic search becomes more legible when the media object itself is spatialized. Querying by language is useful, but seeing the matched region inside the full volume of a clip changes how retrieval is understood.</p>
+        <p class="body-p">A likely next step is feeding this temporal object into later reconstruction projects, letting frame stacks become raw material for splat or accumulation pipelines instead of ending at visualization.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From timeline to spatial object.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Frame volume prototype</div>
+              <div class="log-text">Tested the idea of rendering every frame at once as stacked translucent planes to turn temporal media into a navigable object.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">WebCodecs integration</div>
+              <div class="log-text">Moved decoding into the browser so frame extraction could happen fast enough for interactive spatial rendering.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Language search layer</div>
+              <div class="log-text">Integrated Gemini-powered querying so natural-language prompts could surface relevant regions of the stacked timeline.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">duree.spatial-index.xyz live as a spatial video viewer with frame-stack rendering and semantic retrieval.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 04 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="depthshift.html">← Scene 03 · DepthShift</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="atlas.html">Scene 05 · Atlas →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

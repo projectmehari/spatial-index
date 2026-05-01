@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas · Scene 05 · Spatial Index</title>
+  <meta name="description" content="3D semantic search for live performances using embedded audio, video, and text molecules in an orbitable globe." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_05 · Atlas</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 05 · Semantic Retrieval · Mar 2026</div>
+      <h1 class="project-title">Atlas</h1>
+      <div class="project-subtitle">Three.js · Gemini Embedding 2 · ElevenLabs TTS → Molecular Globe</div>
+      <p class="project-lede">Atlas turns live performances into a searchable semantic structure. Audio, video frames, moving-image clips, and text are broken into molecules, embedded, and rendered as a 3D field that can be queried by concept instead of timestamp.</p>
+      <div class="tag-row">
+        <span class="ptag">Three.js</span>
+        <span class="ptag">Gemini</span>
+        <span class="ptag">ElevenLabs</span>
+        <span class="ptag">Embeddings</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>Mar 2026</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>Molecular Globe</div>
+      <div>Semantic Search</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://atlas.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Live sets are rich, but hard to search by meaning.</h2>
+        <p class="body-p">A performance contains visuals, crowd energy, spoken fragments, sonic transitions, and recurring moods. Conventional search reduces that complexity to title, artist, chapter markers, or a transcript that misses what the scene feels like.</p>
+        <p class="body-p">Atlas asks whether performances can be indexed as semantic matter instead of linear media. If retrieval happens at the level of concept, not timestamp, then a set becomes something closer to a navigable field than a file.</p>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../atlas.gif" alt="Atlas molecular globe overview" />
+            <div class="media-caption">Atlas · orbitable semantic globe · multi-modal retrieval</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">Performances decomposed into molecules instead of tracks.</h2>
+        <p class="body-p">The source corpus spans four sets: Kaytranada in Boiler Room Montréal, Chet Faker in Boiler Room Melbourne, Yousuke Yukimatsu in Boiler Room Tokyo, and Hania Rani at Cercle in Paris. Rather than preserve them as intact videos, Atlas decomposes each one into audio, still frames, video-native clips, and text molecules that can be compared inside one shared embedding space.</p>
+        <p class="body-p">Those four molecule types become different forms of knowing: what the camera witnessed, what Gemini heard, what motion encoded, and what critical writing interpreted. The project reframes a performance as an assemblage of semantic traces rather than one continuous file.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">Embed 1,788 atoms, then query the topology.</h2>
+        <p class="body-p">Atlas builds a molecular globe from 1,788 atoms embedded with Gemini Embedding 2 at 768 dimensions. Each atom belongs to one of sixteen molecules across the four source performances, with shared color families per set and distinct shapes per modality.</p>
+        <p class="body-p">A query is converted into the same embedding space and matched via cosine similarity. The renderer separates raw cosine thresholds from normalized visual scaling, so cross-molecule gating stays honest while each molecule still retains internal contrast.</p>
+        <p class="body-p">An assemblage engine then cuts a roughly one-minute sequence from the strongest matches, alternating raw video beats and narrated beats. The result is edited by semantic proximity rather than chronology, allowing a new clip to emerge from conceptual resonance across different performances.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">Multi-modal retrieval rendered as a navigable object.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Three.js · orbit controls · interactive 3D point field</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">Gemini Embedding 2 at 768 dims · cosine similarity search · ElevenLabs TTS · Cloudflare R2</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Performance media → 16 molecules / 1,788 atoms → embeddings → ranked retrieval → narrated assemblage cut</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Vercel · atlas.spatial-index.xyz</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">Semantic editing changes what “search” can mean.</h2>
+        <p class="body-p">Atlas suggests that retrieval can become a form of composition. Once results are ranked by meaning across modalities, search stops being a lookup utility and starts behaving like a curatorial engine.</p>
+        <p class="body-p">The progress notes also surface a practical lesson: embedding resolution, threshold design, and asset hosting are not backend trivia here. They directly shape how legible the semantic field feels and whether the globe reads as thought or noise.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From source sets to semantic globe.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">Mar 2026</div>
+            <div>
+              <div class="log-title">Corpus decomposition</div>
+              <div class="log-text">Split four Boiler Room and Cercle sets into audio, frames, text, and video-native segments so each modality could be indexed independently.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">Mar 2026</div>
+            <div>
+              <div class="log-title">Embedding field</div>
+              <div class="log-text">Embedded all sixteen JSONs at 768 dimensions and mapped 1,788 atoms into a 3D orbitable globe with color families per set and shapes per molecule type.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">Mar 2026</div>
+            <div>
+              <div class="log-title">Renderer overhaul</div>
+              <div class="log-text">Reworked the renderer around raw cosine gating, normalized visual scaling, a rebuilt index panel, and a three-state camera system for standby, navigation, and flythrough.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">Mar 2026</div>
+            <div>
+              <div class="log-title">Assemblage engine</div>
+              <div class="log-text">Built a semantic clip generator with double-buffered video playback, alternating narration beats, and set-aware text routing instead of simple timeline playback.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">Mar 2026</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">atlas.spatial-index.xyz live with concept search across all molecules, R2-hosted assets, mobile-safe controls, and a semantic montage output path.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 05 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="duree.html">← Scene 04 · Durée</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="memoria.html">Scene 06 · Memoria →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

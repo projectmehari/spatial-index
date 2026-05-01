@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DepthShift · Scene 03 · Spatial Index</title>
+  <meta name="description" content="Depth-reprojected particle fields in the browser and WebXR, built from flat imagery plus depth maps." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_03 · DepthShift</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 03 · WebXR Hologram · 2025</div>
+      <h1 class="project-title">DepthShift</h1>
+      <div class="project-subtitle">Three.js · WebXR · GLSL Vertex Shader → Particle Field</div>
+      <p class="project-lede">DepthShift extrudes flat imagery into an orbitable particle volume using a depth map and a custom vertex shader. The same structure extends into Quest 3, where the depth field can be anchored to physical surfaces as a lightweight spatial hologram.</p>
+      <div class="tag-row">
+        <span class="ptag">Three.js</span>
+        <span class="ptag">WebXR</span>
+        <span class="ptag">GLSL</span>
+        <span class="ptag">Particles</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>2025</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>Particle Field</div>
+      <div>WebXR</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://depthshift.spatial-index.xyz" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Depth maps are often computed, then left trapped in flat interfaces.</h2>
+        <p class="body-p">Single images and videos can now yield useful depth estimates, but most workflows stop at visualization overlays or offline processing. The latent spatial structure is present, yet it rarely becomes something directly navigable.</p>
+        <p class="body-p">DepthShift focuses on that gap. It takes a flat media source plus depth data and asks how little machinery is required to turn the result into a convincing spatial object in both browser and headset.</p>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../Depthshift.gif" alt="DepthShift particle field overview" />
+            <div class="media-caption">DepthShift · depth reprojection into an orbitable point field</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">A bridge between flat media and situated holograms.</h2>
+        <p class="body-p">DepthShift sits at the intersection of browser graphics and mixed reality. It borrows from point-cloud aesthetics, but its goal is less about faithful reconstruction than about fast translation: take an ordinary piece of media and let it behave like a lightweight 3D apparition.</p>
+        <p class="body-p">The Quest 3 companion pushes that logic further. Once the same depth field can be anchored through plane detection and manipulated with hand tracking, the experiment stops being only a viewer and starts becoming a spatial media primitive.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">Extrude a dense particle grid along the depth axis.</h2>
+        <p class="body-p">A source image or video is paired with a depth map and passed through a custom GLSL vertex shader. The shader displaces a dense particle grid along Z per pixel, producing an orbitable point cloud that reads as both image and volume.</p>
+        <p class="body-p">The browser version emphasizes inspection and control. The WebXR version reuses the same depth-derived mesh logic but anchors it to real-world surfaces on Quest 3, with plane detection and hand tracking providing the bridge from representation to placement.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">Shader-driven depth reprojection across browser and headset.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">Three.js · custom GLSL vertex shader · dense particle system</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">Image or video source paired with externally generated depth maps</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Flat media + depth map → per-pixel Z displacement → orbitable field / anchored XR mesh</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">Vercel · depthshift.spatial-index.xyz · Quest 3 WebXR companion</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">A small shader can open a large spatial jump.</h2>
+        <p class="body-p">DepthShift shows how far a lightweight reprojection technique can go before full reconstruction is necessary. The result is not a full model, but it is spatial enough to change how the source media is perceived and handled.</p>
+        <p class="body-p">It also established a practical bridge between browser graphics work and later XR experiments. Once plane detection and hand tracking were in place, headset deployment stopped feeling separate from the rest of the stack.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From depth map to hologram.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Particle reprojection prototype</div>
+              <div class="log-text">Tested per-pixel Z displacement on a dense grid to translate flat depth information into an orbitable field.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Shader refinement</div>
+              <div class="log-text">Adjusted the vertex shader and point density until the field held together as a readable image-volume hybrid.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Quest 3 companion</div>
+              <div class="log-text">Extended the technique into WebXR with plane detection and hand tracking so the depth field could be placed onto real surfaces.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">depthshift.spatial-index.xyz live with browser particle viewing and an XR anchoring path for Quest 3.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 03 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="marble.html">← Scene 02 · Marble</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="duree.html">Scene 04 · Durée →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>

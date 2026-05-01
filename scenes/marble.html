@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marble · Scene 02 · Spatial Index</title>
+  <meta name="description" content="A navigable world model reconstructed from multi-image references of SSENSE Montreal using World Labs Marble." />
+  <link rel="stylesheet" href="../blog.css" />
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header class="si-topbar">
+    <a class="si-back" href="../index.html">← Back to Index</a>
+    <span class="si-topbar-center">Scene_02 · Marble</span>
+    <span class="si-topbar-right">● live</span>
+  </header>
+
+  <div class="si-project-header">
+    <div>
+      <div class="project-eyebrow">Scene 02 · World Models · 2025</div>
+      <h1 class="project-title">Marble</h1>
+      <div class="project-subtitle">World Labs · Marble · Multi-Image → World Model</div>
+      <p class="project-lede">Marble reconstructs David Chipperfield’s SSENSE Montreal flagship from reference photos into a navigable world. The project uses World Labs’ world-model pipeline to test how quickly architectural atmosphere can become explorable spatial output.</p>
+      <div class="tag-row">
+        <span class="ptag">World Labs</span>
+        <span class="ptag">Marble</span>
+        <span class="ptag">3DGS</span>
+        <span class="ptag">.spz</span>
+      </div>
+    </div>
+    <div class="project-header-meta">
+      <div>Montreal, QC</div>
+      <div>2025</div>
+      <div style="margin-top:10px;">OUTPUT</div>
+      <div>.SPZ</div>
+      <div>Navigable World</div>
+    </div>
+  </div>
+
+  <div class="si-body">
+    <nav class="si-toc" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a class="toc-item active" href="#problem"><div class="toc-dot"></div><span class="toc-text">Problem</span></a>
+      <a class="toc-item" href="#context"><div class="toc-dot"></div><span class="toc-text">Context</span></a>
+      <a class="toc-item" href="#approach"><div class="toc-dot"></div><span class="toc-text">Approach</span></a>
+      <a class="toc-item" href="#stack"><div class="toc-dot"></div><span class="toc-text">Stack</span></a>
+      <a class="toc-item" href="#reflections"><div class="toc-dot"></div><span class="toc-text">Reflections</span></a>
+      <a class="toc-item" href="#buildlog"><div class="toc-dot"></div><span class="toc-text">Build Log</span></a>
+      <div class="toc-divider"></div>
+      <a class="toc-demo-link" href="https://marble.worldlabs.ai/world/4305a51d-e2f3-4127-a3b3-6a6c43c2b9fc" target="_blank">↗ Live Demo</a>
+    </nav>
+
+    <main class="si-content">
+      <section class="content-section" id="problem">
+        <div class="section-eyebrow">01 · Problem</div>
+        <h2 class="section-heading">Photographs usually stop at depiction instead of becoming places.</h2>
+        <p class="body-p">Architectural images capture surface and mood, but they rarely yield something you can traverse without a heavier reconstruction pipeline. Marble explores a faster route from reference imagery to spatial world.</p>
+        <p class="body-p">The question is simple: how little capture is enough to recover a convincing sense of a place? In this case, a handful of images becomes an explorable proxy for a specific Montreal interior.</p>
+        <div class="media-grid cols-1">
+          <div class="media-item">
+            <img src="../ezgif-179650c8090959a1.gif" alt="Marble generated SSENSE world overview" />
+            <div class="media-caption">Marble · SSENSE Montreal reconstructed as a navigable world</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="context">
+        <div class="section-eyebrow">02 · Context</div>
+        <h2 class="section-heading">Architecture translated through a world model.</h2>
+        <p class="body-p">The source subject is David Chipperfield’s brutalist SSENSE flagship in Montreal, a space with enough material contrast and spatial rhythm to stress-test generative reconstruction. The project uses that architecture as a benchmark for atmosphere as much as geometry.</p>
+        <p class="body-p">Marble also marks an early world-model experiment in the Spatial Index sequence. It shifts the stack from reconstruction-by-capture toward reconstruction-by-inference, testing what contemporary models can synthesize from sparse visual evidence.</p>
+      </section>
+
+      <section class="content-section" id="approach">
+        <div class="section-eyebrow">03 · Approach</div>
+        <h2 class="section-heading">Multi-image reference in, navigable `.spz` world out.</h2>
+        <p class="body-p">Reference photos of the SSENSE interior are submitted to World Labs’ Marble model, which reconstructs the environment into a navigable output with collider geometry. The result can be explored directly in-browser rather than treated as a static artifact.</p>
+        <p class="body-p">The emphasis here is not on hand-authored cleanup but on evaluating the baseline quality of the model output: how well it preserves structure, material feel, and navigability at different resolutions.</p>
+      </section>
+
+      <section class="content-section" id="stack">
+        <div class="section-eyebrow">04 · Stack</div>
+        <h2 class="section-heading">Sparse references transformed into an explorable model.</h2>
+        <div class="stack-grid">
+          <div class="stack-cell">
+            <div class="stack-cell-label">Rendering</div>
+            <div class="stack-cell-val">World Labs viewer · browser navigation</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Backend / Data</div>
+            <div class="stack-cell-val">World Labs Marble world-model pipeline</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Pipeline</div>
+            <div class="stack-cell-val">Reference photos → Marble inference → `.spz` world with collider meshes</div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-cell-label">Deploy</div>
+            <div class="stack-cell-val">worldlabs.ai hosted viewer · world permalink</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="reflections">
+        <div class="section-eyebrow">05 · Reflections</div>
+        <h2 class="section-heading">World models compress a large amount of spatial labor.</h2>
+        <p class="body-p">Marble demonstrates how quickly a place can become navigable when the reconstruction burden moves from manual workflow to model inference. Even when the result is imperfect, the speed changes what kinds of experiments become realistic.</p>
+        <p class="body-p">The next question is continuity: how these generated worlds can be chained, remixed, or used as input for later scenes rather than treated as isolated outputs.</p>
+      </section>
+
+      <section class="content-section" id="buildlog">
+        <div class="section-eyebrow">06 · Build Log</div>
+        <h2 class="section-heading">From reference set to generated world.</h2>
+        <div class="build-log">
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Reference selection</div>
+              <div class="log-text">Chose SSENSE Montreal imagery for its brutalist geometry, material contrast, and strong spatial identity.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Marble generation</div>
+              <div class="log-text">Ran the multi-image set through World Labs Marble and compared output quality across available resolution settings.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Navigation review</div>
+              <div class="log-text">Checked the resulting world for collider behavior, continuity, and architectural legibility in-browser.</div>
+            </div>
+          </div>
+          <div class="log-item">
+            <div class="log-date">2025</div>
+            <div>
+              <div class="log-title">Launch</div>
+              <div class="log-text">Published the world permalink as Scene 02, establishing the world-model branch of the Spatial Index pipeline.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="si-page-footer">
+    <span class="footer-coords">45.5017° N, 73.5673° W · Scene 02 of 07</span>
+    <nav class="footer-scene-nav">
+      <a class="footer-nav-link" href="sharp.html">← Scene 01 · SHARP</a>
+      <span class="footer-sep">·</span>
+      <a class="footer-nav-link" href="depthshift.html">Scene 03 · DepthShift →</a>
+    </nav>
+    <a class="footer-index-link" href="../index.html">↑ Back to Index</a>
+  </footer>
+
+  <script src="../blog.js"></script>
+</body>
+</html>
