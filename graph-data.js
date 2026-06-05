@@ -63,7 +63,26 @@ const rawNodes = [
   {id:"12:2131",name:"Alpha Intelligence Capital"},
   {id:"12:2163",name:"Mark Cuban"},
   {id:"12:2167",name:"Eric Schmidt"},
-  {id:"12:2171",name:"Xavier Niel"}
+  {id:"12:2171",name:"Xavier Niel"},
+  {id:"new-001",name:"Reactor"},
+  {id:"new-002",name:"Lightspeed Venture Partners"},
+  {id:"new-003",name:"WndrCo"},
+  {id:"new-004",name:"Sky9 Capital"},
+  {id:"new-005",name:"FPV Ventures"},
+  {id:"new-006",name:"Abstract Ventures"},
+  {id:"new-007",name:"Rhoda AI"},
+  {id:"new-008",name:"Capricorn Investment Group"},
+  {id:"new-009",name:"Khosla Ventures"},
+  {id:"new-010",name:"Leitmotif"},
+  {id:"new-011",name:"Matter Venture Partners"},
+  {id:"new-012",name:"Mayfield"},
+  {id:"new-013",name:"Premji Invest"},
+  {id:"new-014",name:"Prelude Ventures"},
+  {id:"new-015",name:"Xora"},
+  {id:"new-016",name:"John Doerr"},
+  {id:"new-017",name:"Wayve"},
+  {id:"new-018",name:"SoftBank Group"},
+  {id:"new-019",name:"Microsoft"}
 ];
 
 const rawEdges = [
@@ -127,7 +146,26 @@ const rawEdges = [
   {from:"12:1746",to:"12:2071", label:"investor"},
   {from:"12:2163",to:"12:2071", label:"Angel"},
   {from:"12:2167",to:"12:2071", label:"Angel"},
-  {from:"12:2171",to:"12:2071", label:"Angel"}
+  {from:"12:2171",to:"12:2071", label:"Angel"},
+  {from:"new-002",to:"new-001", label:"Lead investor"},
+  {from:"new-003",to:"new-001", label:"investor"},
+  {from:"12:1983",to:"new-001", label:"investor"},
+  {from:"new-004",to:"new-001", label:"investor"},
+  {from:"new-005",to:"new-001", label:"investor"},
+  {from:"new-006",to:"new-001", label:"investor"},
+  {from:"new-008",to:"new-007", label:"Lead investor"},
+  {from:"new-009",to:"new-007", label:"investor"},
+  {from:"new-010",to:"new-007", label:"investor"},
+  {from:"new-011",to:"new-007", label:"investor"},
+  {from:"new-012",to:"new-007", label:"investor"},
+  {from:"new-013",to:"new-007", label:"investor"},
+  {from:"new-014",to:"new-007", label:"investor"},
+  {from:"12:1787",to:"new-007", label:"investor"},
+  {from:"new-015",to:"new-007", label:"investor"},
+  {from:"new-016",to:"new-007", label:"Angel"},
+  {from:"new-018",to:"new-017", label:"Lead investor"},
+  {from:"12:1955",to:"new-017", label:"investor"},
+  {from:"new-019",to:"new-017", label:"investor"}
 ];
 
 const capitalData = {
@@ -142,13 +180,16 @@ const capitalData = {
   "12:2087->12:2071":"$1.03B Seed round",
   "12:2091->12:2071":"$1.03B Seed round",
   "11:1480->11:1478":"$230M (Sept 2024)",
-  "11:1479->11:1478":"$230M (Sept 2024)"
+  "11:1479->11:1478":"$230M (Sept 2024)",
+  "new-002->new-001":"$59M Seed",
+  "new-008->new-007":"$450M Series A",
+  "new-018->new-017":"$1.05B Series C"
 };
 
 // Type classification sets
-const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"]);
-const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171"]);
-const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123"]);
+const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"]);
+const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171","new-016"]);
+const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123","new-018","new-019"]);
 
 // Company ordering (determines layout cluster order)
-const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"];
+const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"];
