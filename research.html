@@ -814,91 +814,8 @@
 
   <!-- ── GRAPH SCRIPT ── -->
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+  <script src="graph-data.js"></script>
   <script>
-  // ─── DATA ────────────────────────────────────────────────────────────────────
-  const rawNodes=[
-    {id:"9:736",name:"Odyssey"},{id:"11:1478",name:"World Labs"},
-    {id:"9:795",name:"Google Ventures"},{id:"11:1479",name:"NEA"},
-    {id:"11:1399",name:"EQT Ventures"},{id:"11:1480",name:"a16z"},
-    {id:"9:835",name:"DCVC"},{id:"11:1481",name:"Adobe Ventures"},
-    {id:"9:901",name:"Air Street Capital"},{id:"11:1482",name:"AMD Ventures"},
-    {id:"11:1423",name:"NVentures"},{id:"11:1483",name:"Radical Ventures"},
-    {id:"11:1429",name:"Samsung Next"},{id:"11:1484",name:"Databricks Ventures"},
-    {id:"10:949",name:"Jeffrey Dean"},{id:"10:955",name:"Elad Gil"},
-    {id:"11:1486",name:"Marc Benioff"},{id:"10:1124",name:"Kyle Vogt"},
-    {id:"11:1487",name:"Ashton Kutcher"},{id:"10:1168",name:"Garry Tan"},
-    {id:"11:1488",name:"Autodesk"},{id:"10:1261",name:"Guillermo Rauch"},
-    {id:"11:1489",name:"Fidelity Mgmt."},{id:"10:1280",name:"Soleio"},
-    {id:"11:1490",name:"Emerson Collective"},{id:"12:1746",name:"Sea Limited"},
-    {id:"10:1290",name:"Qasar Younis"},{id:"11:1491",name:"Geoffrey Hinton"},
-    {id:"10:1321",name:"Soumith Chintala"},{id:"11:1492",name:"Sanabil Investments"},
-    {id:"12:1787",name:"Temasek"},{id:"12:1947",name:"NVIDIA Cosmos"},
-    {id:"12:1955",name:"NVIDIA"},{id:"12:1963",name:"Google Genie"},
-    {id:"12:1967",name:"Google / Alphabet"},{id:"12:1975",name:"Luma AI"},
-    {id:"12:1979",name:"HUMAIN (Saudi PIF)"},{id:"12:1983",name:"Amplify Partners"},
-    {id:"12:1987",name:"Matrix Partners"},{id:"12:2015",name:"Decart"},
-    {id:"12:2019",name:"Index Ventures"},{id:"12:2023",name:"Felicis"},
-    {id:"12:2035",name:"Runway"},{id:"12:2039",name:"General Atlantic"},
-    {id:"12:2043",name:"Salesforce Ventures"},{id:"12:2047",name:"Getty Images"},
-    {id:"12:2071",name:"AMI Labs"},{id:"12:2075",name:"Cathay Innovation"},
-    {id:"12:2079",name:"Greycroft"},{id:"12:2083",name:"Hiro Capital"},
-    {id:"12:2087",name:"HV Capital"},{id:"12:2091",name:"Bezos Expeditions"},
-    {id:"12:2115",name:"Toyota Ventures"},{id:"12:2119",name:"New Legacy Ventures"},
-    {id:"12:2123",name:"SBVA"},{id:"12:2127",name:"NVIDIA (AMI)"},
-    {id:"12:2131",name:"Alpha Intelligence Capital"},
-    {id:"12:2163",name:"Mark Cuban"},{id:"12:2167",name:"Eric Schmidt"},
-    {id:"12:2171",name:"Xavier Niel"}
-  ];
-
-  const rawEdges=[
-    {from:"9:795",to:"9:736",label:"Lead investor"},{from:"11:1479",to:"11:1478",label:"Lead investor"},
-    {from:"9:835",to:"9:736",label:"investor"},{from:"11:1481",to:"11:1478",label:"investor"},
-    {from:"9:901",to:"9:736",label:"investor"},{from:"11:1482",to:"11:1478",label:"investor"},
-    {from:"10:955",to:"9:736",label:"Angel"},{from:"11:1486",to:"11:1478",label:"Angel"},
-    {from:"10:949",to:"9:736",label:"Angel"},{from:"10:1124",to:"9:736",label:"Angel"},
-    {from:"11:1487",to:"11:1478",label:"Angel"},{from:"10:1168",to:"9:736",label:"Angel"},
-    {from:"11:1488",to:"11:1478",label:"Investor"},{from:"10:1261",to:"9:736",label:"Angel"},
-    {from:"11:1489",to:"11:1478",label:"Investor"},{from:"10:1280",to:"9:736",label:"Angel"},
-    {from:"11:1490",to:"11:1478",label:"Investor"},{from:"10:1290",to:"9:736",label:"Angel"},
-    {from:"11:1491",to:"11:1478",label:"Angel"},{from:"10:1321",to:"9:736",label:"Angel"},
-    {from:"11:1492",to:"11:1478",label:"Investor"},{from:"11:1399",to:"9:736",label:"Lead investor"},
-    {from:"11:1480",to:"11:1478",label:"Lead investor"},{from:"11:1423",to:"9:736",label:"investor"},
-    {from:"11:1483",to:"11:1478",label:"investor"},{from:"11:1429",to:"9:736",label:"investor"},
-    {from:"11:1484",to:"11:1478",label:"investor"},{from:"10:949",to:"11:1478",label:"Angel"},
-    {from:"11:1423",to:"11:1478",label:"Investor"},{from:"12:1746",to:"11:1478",label:"Investor"},
-    {from:"12:1787",to:"11:1478",label:"Investor"},{from:"12:1955",to:"12:1947",label:"parent company"},
-    {from:"12:1967",to:"12:1963",label:"parent company"},{from:"12:1979",to:"12:1975",label:"Lead investor"},
-    {from:"12:1983",to:"12:1975",label:"investor"},{from:"12:1987",to:"12:1975",label:"investor"},
-    {from:"11:1480",to:"12:1975",label:"investor"},{from:"11:1482",to:"12:1975",label:"investor"},
-    {from:"11:1423",to:"12:1975",label:"investor"},{from:"12:2019",to:"12:2015",label:"Lead investor"},
-    {from:"12:2023",to:"12:2015",label:"investor"},{from:"12:2039",to:"12:2035",label:"Lead investor"},
-    {from:"12:2043",to:"12:2035",label:"investor"},{from:"12:2047",to:"12:2035",label:"investor"},
-    {from:"11:1480",to:"12:2035",label:"investor"},{from:"9:795",to:"12:2035",label:"investor"},
-    {from:"12:2075",to:"12:2071",label:"Lead investor"},{from:"12:2079",to:"12:2071",label:"Lead investor"},
-    {from:"12:2083",to:"12:2071",label:"Lead investor"},{from:"12:2087",to:"12:2071",label:"Lead investor"},
-    {from:"12:2091",to:"12:2071",label:"Lead investor"},{from:"12:2115",to:"12:2071",label:"investor"},
-    {from:"12:2119",to:"12:2071",label:"investor"},{from:"12:2123",to:"12:2071",label:"investor"},
-    {from:"12:2127",to:"12:2071",label:"investor"},{from:"12:2131",to:"12:2071",label:"investor"},
-    {from:"12:1787",to:"12:2071",label:"investor"},{from:"12:1746",to:"12:2071",label:"investor"},
-    {from:"12:2163",to:"12:2071",label:"Angel"},{from:"12:2167",to:"12:2071",label:"Angel"},
-    {from:"12:2171",to:"12:2071",label:"Angel"}
-  ];
-
-  const capitalData = {
-    "9:795->9:736":  "$9M Seed",
-    "11:1399->9:736": "$18M Series A",
-    "12:1979->12:1975": "$900M Series C",
-    "12:2039->12:2035": "$315M Series E @ $5.3B val",
-    "12:2019->12:2015": "$153M total ($21M Seed · $32M Series A · $100M Series B)",
-    "12:2075->12:2071": "$1.03B Seed @ $3.5B val",
-    "12:2079->12:2071": "$1.03B Seed round",
-    "12:2083->12:2071": "$1.03B Seed round",
-    "12:2087->12:2071": "$1.03B Seed round",
-    "12:2091->12:2071": "$1.03B Seed round",
-    "11:1480->11:1478": "$230M (Sept 2024)",
-    "11:1479->11:1478": "$230M (Sept 2024)",
-  };
-
   // ─── ARE.NA ───────────────────────────────────────────────────────────────────
   let arenaBlocks = [];
 
@@ -965,9 +882,6 @@
   window.addEventListener('load', () => setTimeout(fetchArena, 600));
 
   // ─── CLASSIFY ─────────────────────────────────────────────────────────────────
-  const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"]);
-  const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171"]);
-  const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123"]);
 
   function classify(id) {
     if (COMPANIES.has(id))  return 'company';
@@ -980,7 +894,6 @@
   const typeSize   = { company:46, vc:28, angel:24, corporate:30 };
 
   // ─── LAYOUT ───────────────────────────────────────────────────────────────────
-  const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071"];
   const companyY = 80;
 
   function getPrimaryCompany(nodeId) {
