@@ -82,7 +82,17 @@ const rawNodes = [
   {id:"new-016",name:"John Doerr"},
   {id:"new-017",name:"Wayve"},
   {id:"new-018",name:"SoftBank Group"},
-  {id:"new-019",name:"Microsoft"}
+  {id:"new-019",name:"Microsoft"},
+  {id:"new-020",name:"Sequoia Capital"},
+  {id:"new-021",name:"Benchmark"},
+  {id:"new-022",name:"Zeev Ventures"},
+  {id:"new-023",name:"eBay Ventures"},
+  {id:"new-024",name:"Atreides Management"},
+  {id:"new-025",name:"Valor Equity Partners"},
+  {id:"new-026",name:"Andrej Karpathy"},
+  {id:"new-027",name:"Michael Eisner"},
+  {id:"new-028",name:"Moritz Baier-Lentz"},
+  {id:"new-029",name:"Nintendo family"}
 ];
 
 const rawEdges = [
@@ -165,7 +175,22 @@ const rawEdges = [
   {from:"new-016",to:"new-007", label:"Angel"},
   {from:"new-018",to:"new-017", label:"Lead investor"},
   {from:"12:1955",to:"new-017", label:"investor"},
-  {from:"new-019",to:"new-017", label:"investor"}
+  {from:"new-019",to:"new-017", label:"investor"},
+  // Decart $300M round (Jun 2026) — led by Radical Ventures
+  {from:"11:1483",to:"12:2015", label:"Lead investor"},
+  {from:"12:1955",to:"12:2015", label:"investor"},
+  {from:"new-024",to:"12:2015", label:"investor"},
+  {from:"new-025",to:"12:2015", label:"investor"},
+  {from:"11:1481",to:"12:2015", label:"investor"},
+  {from:"12:2115",to:"12:2015", label:"investor"},
+  {from:"new-023",to:"12:2015", label:"investor"},
+  {from:"new-020",to:"12:2015", label:"investor"},
+  {from:"new-021",to:"12:2015", label:"investor"},
+  {from:"new-022",to:"12:2015", label:"investor"},
+  {from:"new-026",to:"12:2015", label:"Angel"},
+  {from:"new-027",to:"12:2015", label:"Angel"},
+  {from:"new-028",to:"12:2015", label:"Angel"},
+  {from:"new-029",to:"12:2015", label:"investor"}
 ];
 
 const capitalData = {
@@ -183,13 +208,28 @@ const capitalData = {
   "11:1479->11:1478":"$230M (Sept 2024)",
   "new-002->new-001":"$59M Seed",
   "new-008->new-007":"$450M Series A",
-  "new-018->new-017":"$1.05B Series C"
+  "new-018->new-017":"$1.05B Series C",
+  // Decart $300M round (Jun 2026)
+  "11:1483->12:2015":"$300M (led by Radical Ventures)",
+  "12:1955->12:2015":"$300M",
+  "new-024->12:2015":"$300M",
+  "new-025->12:2015":"$300M",
+  "11:1481->12:2015":"$300M",
+  "12:2115->12:2015":"$300M",
+  "new-023->12:2015":"$300M",
+  "new-020->12:2015":"$300M",
+  "new-021->12:2015":"$300M",
+  "new-022->12:2015":"$300M",
+  "new-026->12:2015":"$300M",
+  "new-027->12:2015":"$300M",
+  "new-028->12:2015":"$300M",
+  "new-029->12:2015":"$300M"
 };
 
 // Type classification sets
 const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"]);
-const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171","new-016"]);
-const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123","new-018","new-019"]);
+const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171","new-016","new-026","new-027","new-028"]);
+const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123","new-018","new-019","new-023"]);
 
 // Company ordering (determines layout cluster order)
 const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"];
