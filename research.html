@@ -397,6 +397,14 @@
       cursor: default;
     }
 
+    .benchmark-preview {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
     .graph-preview-wrap #cy2 {
       width: 100%;
       height: 100%;
@@ -691,7 +699,8 @@
       <h1 class="intro-title">Research</h1>
       <p class="intro-sub">
         Mapping the infrastructure of spatial intelligence —<br>
-        <span>01</span> release · companies · capital · connections
+        <span>01</span> release · companies · capital · connections<br>
+        <span>02</span> release · benchmarks · evaluation · 3D reasoning
       </p>
     </div>
 
@@ -789,6 +798,70 @@
           <div class="card-footer">
             <span class="card-coords">45.5017° N, 73.5673° W</span>
             <span class="card-format">OUTPUT · NETWORK GRAPH · FUNDING LANDSCAPE</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /.research-track -->
+
+    <!-- ── RELEASE 02 ── -->
+    <div class="section-label" style="margin-top:80px">
+      <span class="section-label-text">release_02</span>
+      <div class="section-label-line"></div>
+    </div>
+
+    <div class="research-track">
+
+      <!-- Research 02 — Spatial Benchmark -->
+      <div class="research-entry" data-idx="1">
+        <div class="research-card">
+
+          <div class="card-topbar">
+            <div class="card-topbar-left">
+              <div class="card-dot"></div>
+              <span class="card-id">research_02 · SPATIAL BENCHMARKS</span>
+            </div>
+            <span class="card-status live">● live</span>
+          </div>
+
+          <div class="card-meta-header">
+            <div class="card-meta">
+              <div class="card-title">Spatial Benchmark Explorer</div>
+              <div class="card-subtitle">Interactive 3D Benchmark Visualizer · Snap · WorldModelBench · 3DSRBench · SnorkelSpatial</div>
+              <p class="card-desc">A template-based interactive platform for exploring spatial intelligence benchmarks. Four benchmarks with 3D Three.js visualizations per question, per-category accuracy matrices, model leaderboards, and a forkable template for adding your own benchmark data — just drop a JSON file.</p>
+              <div class="card-tags">
+                <span class="card-tag">Three.js</span>
+                <span class="card-tag">3D Visualization</span>
+                <span class="card-tag">Benchmarking</span>
+                <span class="card-tag">Spatial Reasoning</span>
+                <span class="card-tag">World Models</span>
+                <span class="card-tag">Open Source</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="card-num">02</div>
+              <a class="card-link" href="https://spatial-benchmark.vercel.app" target="_blank">↗ Live</a>
+              <a class="card-link" href="https://github.com/projectmehari/spatial-benchmark" target="_blank">↗ GitHub</a>
+            </div>
+          </div>
+
+          <div class="card-preview benchmark-preview">
+            <iframe src="https://spatial-benchmark.vercel.app" 
+                    title="Spatial Benchmark Explorer"
+                    loading="lazy"
+                    style="width:100%;height:100%;border:none;background:var(--bg)"></iframe>
+            <a class="graph-fullscreen-btn" href="https://spatial-benchmark.vercel.app" target="_blank" title="Open fullscreen">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 5V1H5M8 1H12V5M12 8V12H8M5 12H1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Open
+            </a>
+          </div>
+
+          <div class="card-footer">
+            <span class="card-coords">45.5017° N, 73.5673° W</span>
+            <span class="card-format">OUTPUT · INTERACTIVE · 3D · MULTI-BENCHMARK</span>
           </div>
 
         </div>
