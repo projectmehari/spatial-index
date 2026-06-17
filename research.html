@@ -400,9 +400,56 @@
     .benchmark-preview {
       position: relative;
       width: 100%;
-      height: 480px;
+      height: 220px;
       overflow: hidden;
       background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bp-inner {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .bp-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 16px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      display: inline-block;
+    }
+
+    .bp-models {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .bp-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .bp-sub {
+      font-family: var(--font-serif);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
     .graph-preview-wrap #cy2 {
@@ -847,11 +894,17 @@
           </div>
 
           <div class="card-preview benchmark-preview">
-            <iframe src="https://spatial-benchmark.vercel.app" 
-                    title="Spatial Benchmark Explorer"
-                    loading="lazy"
-                    style="width:100%;height:100%;border:none;background:var(--bg)"></iframe>
-            <a class="graph-fullscreen-btn" href="https://spatial-benchmark.vercel.app" target="_blank" title="Open fullscreen">
+            <div class="bp-inner">
+              <div class="bp-badge">4 benchmarks · 124 questions · 48 models</div>
+              <div class="bp-models">
+                <span class="bp-dot" style="background:#8aba1a"></span>Snap Specs
+                <span class="bp-dot" style="background:#3498db"></span>WorldModelBench
+                <span class="bp-dot" style="background:#e74c3c"></span>3DSRBench
+                <span class="bp-dot" style="background:#9b59b6"></span>SnorkelSpatial
+              </div>
+              <div class="bp-sub">Three.js · 3D question visualizations · Category matrices · Forkable JSON template</div>
+            </div>
+            <a class="graph-fullscreen-btn" href="https://spatial-benchmark.vercel.app" target="_blank" title="Open benchmark explorer">
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 5V1H5M8 1H12V5M12 8V12H8M5 12H1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
