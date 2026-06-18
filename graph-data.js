@@ -92,7 +92,10 @@ const rawNodes = [
   {id:"new-026",name:"Andrej Karpathy"},
   {id:"new-027",name:"Michael Eisner"},
   {id:"new-028",name:"Moritz Baier-Lentz"},
-  {id:"new-029",name:"Nintendo family"}
+  {id:"new-029",name:"Nintendo family"},
+  {id:"new-030",name:"Natural Capital"},
+  {id:"new-031",name:"Amazon"},
+  {id:"new-032",name:"IQT"}
 ];
 
 const rawEdges = [
@@ -190,12 +193,16 @@ const rawEdges = [
   {from:"new-026",to:"12:2015", label:"Angel"},
   {from:"new-027",to:"12:2015", label:"Angel"},
   {from:"new-028",to:"12:2015", label:"Angel"},
-  {from:"new-029",to:"12:2015", label:"investor"}
+  {from:"new-029",to:"12:2015", label:"investor"},
+  // Odyssey $310M Series B (Jun 2026) — led by Natural Capital
+  {from:"new-030",to:"9:736",   label:"Lead investor"},
+  {from:"new-031",to:"9:736",   label:"investor"},
+  {from:"new-032",to:"9:736",   label:"investor"}
 ];
 
 const capitalData = {
-  "9:795->9:736":    "$9M Seed",
-  "11:1399->9:736":  "$18M Series A",
+  "9:795->9:736":    "$9M Seed · $310M Series B",
+  "11:1399->9:736":  "$18M Series A · $310M Series B",
   "12:1979->12:1975":"$900M Series C",
   "12:2039->12:2035":"$315M Series E @ $5.3B val",
   "12:2019->12:2015":"$153M total ($21M Seed · $32M Series A · $100M Series B)",
@@ -223,13 +230,18 @@ const capitalData = {
   "new-026->12:2015":"$300M",
   "new-027->12:2015":"$300M",
   "new-028->12:2015":"$300M",
-  "new-029->12:2015":"$300M"
+  "new-029->12:2015":"$300M",
+  // Odyssey $310M Series B (Jun 2026)
+  "new-030->9:736":  "$310M Series B @ $1.45B val",
+  "new-031->9:736":  "$310M Series B",
+  "11:1482->9:736":  "$310M Series B",
+  "new-032->9:736":  "$310M Series B"
 };
 
 // Type classification sets
 const COMPANIES  = new Set(["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"]);
 const ANGELS     = new Set(["10:949","10:955","10:1124","10:1168","10:1261","10:1280","10:1290","10:1321","11:1486","11:1487","11:1491","12:2163","12:2167","12:2171","new-016","new-026","new-027","new-028"]);
-const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123","new-018","new-019","new-023"]);
+const CORPORATES = new Set(["11:1488","12:1955","12:1967","12:2127","12:1746","12:1787","12:2043","12:2047","12:2115","12:2123","new-018","new-019","new-023","new-031"]);
 
 // Company ordering (determines layout cluster order)
 const companyIds = ["9:736","11:1478","12:1947","12:1963","12:1975","12:2015","12:2035","12:2071","new-001","new-007","new-017"];
