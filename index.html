@@ -902,7 +902,7 @@
         const t = i / cols;
         const xBottom = (t - 0.5) * spread + w / 2;
         const alpha = 0.06 + 0.04 * Math.sin(t * Math.PI);
-        ctx.strokeStyle = gridRGBA(${alpha});
+        ctx.strokeStyle = gridRGBA(alpha);
         ctx.beginPath();
         ctx.moveTo(vp.x, vp.y);
         ctx.lineTo(xBottom, h + 20);
@@ -916,7 +916,7 @@
         const x0 = vp.x - (spread / 2) * t;
         const x1 = vp.x + (spread / 2) * t;
         const alpha = t * 0.12;
-        ctx.strokeStyle = gridRGBA(${alpha});
+        ctx.strokeStyle = gridRGBA(alpha);
         ctx.beginPath();
         ctx.moveTo(x0, y);
         ctx.lineTo(x1, y);
