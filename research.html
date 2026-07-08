@@ -19,6 +19,48 @@
       --font-mono:  "Geist Mono", monospace;
     }
 
+    /* ── LIGHT THEME ── */
+    [data-theme="light"] {
+      --bg:        #e9f1dc;
+      --lime:      #2f5d10;
+      --lime-dim:  rgba(47,93,16,0.12);
+      --lime-glow: rgba(47,93,16,0.22);
+      --green-dk:  #cdddb5;
+      --text:      #3c6b16;
+      --text-dim:  #5e7d2e;
+      --border:    rgba(47,93,16,0.25);
+    }
+    [data-theme="light"] header {
+      background: linear-gradient(to bottom, rgba(233,241,220,0.95), transparent);
+    }
+    [data-theme="light"] .research-card {
+      background: rgba(255,255,255,0.65);
+    }
+    [data-theme="light"] .card-topbar {
+      background: rgba(47,93,16,0.05);
+    }
+    [data-theme="light"] .card-desc {
+      color: rgba(47,93,16,0.85);
+    }
+    [data-theme="light"] .card-num {
+      color: rgba(47,93,16,0.18);
+    }
+    [data-theme="light"] .research-card:hover .card-num {
+      color: rgba(47,93,16,0.32);
+    }
+    [data-theme="light"] .intro-title {
+      text-shadow: none;
+    }
+    [data-theme="light"] body::after {
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+    }
+
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
     html, body {
@@ -109,6 +151,27 @@
       font-size: 10px;
       color: var(--text-dim);
       letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .theme-toggle {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1;
+      color: var(--text-dim);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 4px 7px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover {
+      color: var(--lime);
+      border-color: var(--lime);
+      background: var(--lime-dim);
     }
 
     /* ── CURSOR ── */
@@ -719,7 +782,8 @@
         font-size: 9px;
       }
       .header-left { font-size: 9px; letter-spacing: 0.1em; }
-      .header-right { display: none; }
+      .header-right { display: flex; gap: 10px; }
+      .header-right #clock { display: none; }
       .intro-title { font-size: 38px; }
     }
   </style>
@@ -736,7 +800,10 @@
       <a href="https://www.spatial-index.xyz">Work</a>
       <a href="https://www.spatial-index.xyz/research" class="active">Research</a>
     </nav>
-    <div class="header-right" id="clock">00:00:00</div>
+    <div class="header-right">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle light / dark mode">☾</button>
+      <span id="clock">00:00:00</span>
+    </div>
   </header>
 
   <div class="scroll-container">
@@ -1368,6 +1435,11 @@
     let scrollY = 0;
     window.addEventListener('scroll', () => { scrollY = window.scrollY; });
 
+    function gridRGBA(a) {
+      const light = document.documentElement.getAttribute('data-theme') === 'light';
+      return light ? `rgba(60,100,20,${a})` : `rgba(138,186,26,${a})`;
+    }
+
     function drawGrid() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const w = canvas.width, h = canvas.height;
@@ -1383,7 +1455,7 @@
         const t = i / cols;
         const xBottom = (t - 0.5) * spread + w / 2;
         const alpha = 0.06 + 0.04 * Math.sin(t * Math.PI);
-        ctx.strokeStyle = `rgba(138,186,26,${alpha})`;
+        ctx.strokeStyle = gridRGBA(${alpha});
         ctx.beginPath();
         ctx.moveTo(vp.x, vp.y);
         ctx.lineTo(xBottom, h + 20);
@@ -1397,7 +1469,7 @@
         const x0 = vp.x - (spread / 2) * t;
         const x1 = vp.x + (spread / 2) * t;
         const alpha = t * 0.12;
-        ctx.strokeStyle = `rgba(138,186,26,${alpha})`;
+        ctx.strokeStyle = gridRGBA(${alpha});
         ctx.beginPath();
         ctx.moveTo(x0, y);
         ctx.lineTo(x1, y);
@@ -1406,7 +1478,7 @@
 
       const grad = ctx.createLinearGradient(0, horizon - 30, 0, horizon + 30);
       grad.addColorStop(0, 'transparent');
-      grad.addColorStop(0.5, 'rgba(138,186,26,0.06)');
+      grad.addColorStop(0.5, gridRGBA(0.06));
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.fillRect(0, horizon - 30, w, 60);
@@ -1419,7 +1491,26 @@
     render();
 
   </script>
-  
+
+  <script>
+    // ── THEME TOGGLE ──
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('theme-toggle');
+      const stored = localStorage.getItem('si-theme');
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      const initial = stored || (prefersLight ? 'light' : 'dark');
+      root.setAttribute('data-theme', initial);
+      toggle.textContent = initial === 'light' ? '☀' : '☾';
+      toggle.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('si-theme', next);
+        toggle.textContent = next === 'light' ? '☀' : '☾';
+      });
+    })();
+  </script>
+
   <!-- Vercel Web Analytics -->
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </body>
