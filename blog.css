@@ -40,6 +40,46 @@
 [data-theme="light"] .media-item { background: #f4f8ec; }
 [data-theme="light"] .si-page-footer { background: rgba(47,93,16,0.04); }
 
+/* ── LIGHT THEME · LEGIBILITY OVERRIDES ──
+   Body/lede text was hardcoded to dark-mode lime (138,186,26) at low
+   opacity, which washes out on the light bg. Swap to high-opacity
+   forest green + heavier weight so it reads cleanly in light mode. */
+[data-theme="light"] .body-p {
+  color: rgba(42,76,14,0.92);
+  font-weight: 400;
+}
+[data-theme="light"] .project-lede {
+  color: rgba(42,76,14,0.9);
+  font-weight: 400;
+}
+[data-theme="light"] .callout-text {
+  color: rgba(42,76,14,0.95);
+  font-weight: 400;
+}
+[data-theme="light"] .callout {
+  background: rgba(47,93,16,0.06);
+  border-left-color: rgba(47,93,16,0.4);
+}
+[data-theme="light"] .stack-cell-val {
+  color: rgba(42,76,14,0.9);
+}
+[data-theme="light"] .log-text {
+  color: rgba(42,76,14,0.9);
+}
+[data-theme="light"] .toc-item.active,
+[data-theme="light"] .toc-item:hover {
+  background: rgba(47,93,16,0.09);
+}
+/* small-caps labels were near-invisible lime; use readable dark green */
+[data-theme="light"] .section-eyebrow,
+[data-theme="light"] .toc-label,
+[data-theme="light"] .media-caption,
+[data-theme="light"] .footer-coords,
+[data-theme="light"] .log-date,
+[data-theme="light"] .stack-cell-label {
+  color: rgba(47,93,16,0.55);
+}
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
