@@ -197,7 +197,9 @@ const rawEdges = [
   // Odyssey $310M Series B (Jun 2026) — led by Natural Capital
   {from:"new-030",to:"9:736",   label:"Lead investor"},
   {from:"new-031",to:"9:736",   label:"investor"},
-  {from:"new-032",to:"9:736",   label:"investor"}
+  {from:"new-032",to:"9:736",   label:"investor"},
+  // World Labs $1B round (Feb 2026) — Autodesk $200M; AMD/Emerson/Fidelity/Nvidia backers
+  {from:"12:1955",to:"11:1478", label:"Investor"}
 ];
 
 const capitalData = {
@@ -235,7 +237,13 @@ const capitalData = {
   "new-030->9:736":  "$310M Series B @ $1.45B val",
   "new-031->9:736":  "$310M Series B",
   "11:1482->9:736":  "$310M Series B",
-  "new-032->9:736":  "$310M Series B"
+  "new-032->9:736":  "$310M Series B",
+  // World Labs $1B round (Feb 2026) — Autodesk $200M; AMD/Emerson/Fidelity/Nvidia backers
+  "11:1488->11:1478":"$200M (Feb 2026, part of $1B round)",
+  "12:1955->11:1478":"$1B round (Feb 2026, backer)",
+  "11:1482->11:1478":"$1B round (Feb 2026, backer)",
+  "11:1490->11:1478":"$1B round (Feb 2026, backer)",
+  "11:1489->11:1478":"$1B round (Feb 2026, backer)"
 };
 
 // Type classification sets
